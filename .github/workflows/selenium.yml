@@ -1,4 +1,4 @@
-name: Cypress Test Suite
+name: Selenium Test Suite
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main  # Runs the workflow on pull requests to the main branch
 
 jobs:
-  cypress-run:
+  selenium-run:
     runs-on: ubuntu-latest # Specify the OS where the tests will run
 
     # env:
