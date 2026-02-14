@@ -30,7 +30,7 @@ jobs:
           path: test-juice-shop-server
           ref: master
 
-      - name: Set up Node.js cypress
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24  # Specify the Node.js version (use the version your project uses)
