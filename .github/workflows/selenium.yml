@@ -16,12 +16,12 @@ jobs:
     #   PORT: 3000  # Set the environment variable globally for the job
 
     steps:
-      - name: Checkout code (cypress repo)
+      - name: Checkout code (selenium repo)
         uses: actions/checkout@v4
         with:
-          repository: Area-Turtle/selenium-automation-project  # Specify your Cypress repository, if it's different from the main one
+          repository: Area-Turtle/selenium-automation-project  # Specify your selenium repository, if it's different from the main one
           path: selenium-automation-project
-          ref: main  # Optionally specify the branch for Cypress tests
+          ref: main  # Optionally specify the branch for selenium tests
       
       - name: Checkout code (server repo)
         uses: actions/checkout@v4
@@ -36,13 +36,13 @@ jobs:
           node-version: 24  # Specify the Node.js version (use the version your project uses)
       
 
-      # - name: Cache Cypress npm
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: ~/.npm
-      #     key: ${{ runner.os }}-npm-cypress-${{ hashFiles('cypress-automation-project/**/package.json') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-npm-cypress-
+      - name: Cache Selenium npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-selenium-${{ hashFiles('selenium-automation-project/**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-selenium-
 
       - name: Cache Server npm
         uses: actions/cache@v4
@@ -52,11 +52,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-npm-server-
 
-      # - name: Install dependencies (cypress)
-      #   run: npm install  # Installs the dependencies from package.json
-      #   working-directory: cypress-automation-project
-      #   env:
-      #     MANPATH: /nonexistent
+      - name: Install dependencies (selenium)
+        run: npm install  # Installs the dependencies from package.json
+        working-directory: selenium-automation-project
+        env:
+          MANPATH: /nonexistent
 
       - name: Install server dependencies (server)
         run: npm install  # Install the server's dependencies (extra)
