@@ -1,0 +1,90 @@
+name: Cypress Test Suite
+
+on:
+  push:
+    branches:
+      - main  # Runs the workflow on pushes to the main branch
+  pull_request:
+    branches:
+      - main  # Runs the workflow on pull requests to the main branch
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest # Specify the OS where the tests will run
+
+    # env:
+    #   PORT: 3000  # Set the environment variable globally for the job
+
+    steps:
+      - name: Checkout code (cypress repo)
+        uses: actions/checkout@v4
+        with:
+          repository: Area-Turtle/selenium-automation-project  # Specify your Cypress repository, if it's different from the main one
+          path: selenium-automation-project
+          ref: main  # Optionally specify the branch for Cypress tests
+      
+      - name: Checkout code (server repo)
+        uses: actions/checkout@v4
+        with:
+          repository: Area-Turtle/test-juice-shop-server  # Specify your server repository
+          path: test-juice-shop-server
+          ref: master
+
+      - name: Set up Node.js cypress
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24  # Specify the Node.js version (use the version your project uses)
+      
+
+      # - name: Cache Cypress npm
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ~/.npm
+      #     key: ${{ runner.os }}-npm-cypress-${{ hashFiles('cypress-automation-project/**/package.json') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-npm-cypress-
+
+      - name: Cache Server npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-server-${{ hashFiles('test-juice-shop-server/**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-server-
+
+      # - name: Install dependencies (cypress)
+      #   run: npm install  # Installs the dependencies from package.json
+      #   working-directory: cypress-automation-project
+      #   env:
+      #     MANPATH: /nonexistent
+
+      - name: Install server dependencies (server)
+        run: npm install  # Install the server's dependencies (extra)
+        working-directory: test-juice-shop-server
+
+      - name: Start the server # Run the server in the background
+        run: |
+          cd test-juice-shop-server
+          HOST=0.0.0.0 
+          PORT=3000 
+          npm start &  
+
+      # Wait for server to be ready
+      - name: Wait for server
+        run: npx wait-on http://localhost:3000
+
+      # - run: curl -v http://localhost:3000/# || echo "Server not reachable" # prints whats wrong
+        env:
+          MANPATH: /nonexistent
+
+      # # Run Cypress tests
+      # - name: Run Cypress
+      #   uses: cypress-io/github-action@v5
+      #   with:
+      #     browser: chrome
+      #     start: npm run
+      #     install: false
+      #     working-directory: cypress-automation-project
+      #   env:
+      #     CYPRESS_baseUrl: http://localhost:3000/
+    

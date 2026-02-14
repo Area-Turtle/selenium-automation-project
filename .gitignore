@@ -1,0 +1,27 @@
+# Ignore node_modules
+node_modules/
+
+# Ignore npm logs
+npm-debug.log*
+
+# Ignore build output
+dist/
+build/
+
+# Ignore IDE/editor settings (VS Code, Sublime, etc.)
+.vscode/
+.idea/
+
+# Ignore OS-specific files (macOS, Windows)
+.DS_Store
+Thumbs.db
+
+# Ignore Cypress testing files
+cypress/videos/
+cypress/screenshots/
+
+# Ignore package-lock.json or yarn.lock if needed (rare)
+package-lock.json
+
+# Ignore cypress.config.js
+cypress.config.js

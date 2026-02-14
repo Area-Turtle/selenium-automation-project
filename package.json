@@ -1,0 +1,25 @@
+{
+  "name": "selenium-automation-project",
+  "version": "1.0.0",
+  "description": "is a selenium automation for a example template website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Area-Turtle/selenium-automation-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Area-Turtle/selenium-automation-project/issues"
+  },
+  "homepage": "https://github.com/Area-Turtle/selenium-automation-project#readme",
+  "dependencies": {
+    "chromedriver": "^145.0.3",
+    "selenium-webdriver": "^4.40.0"
+  }
+}
