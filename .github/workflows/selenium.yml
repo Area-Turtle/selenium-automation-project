@@ -57,6 +57,8 @@ jobs:
         working-directory: selenium-automation-project
         env:
           MANPATH: /nonexistent
+      - name: install chrome
+        uses: browser-actions/setup-chrome@v1
 
       - name: Install server dependencies (server)
         run: npm install  # Install the server's dependencies (extra)
@@ -77,14 +79,6 @@ jobs:
         env:
           MANPATH: /nonexistent
 
-      # # Run Cypress tests
-      # - name: Run Cypress
-      #   uses: cypress-io/github-action@v5
-      #   with:
-      #     browser: chrome
-      #     start: npm run
-      #     install: false
-      #     working-directory: cypress-automation-project
-      #   env:
-      #     CYPRESS_baseUrl: http://localhost:3000/
+      - name: Run selenium test
+        run: node seleneium_smoketest.js 
     
