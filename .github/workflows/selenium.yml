@@ -80,5 +80,6 @@ jobs:
           MANPATH: /nonexistent
 
       - name: Run selenium test
+        working-directory: selenium-automation-project
         run: node seleneium_smoketest.js 
     
