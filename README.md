@@ -39,7 +39,7 @@ nvm -v
 npm install
 
 # Local Host Run Site > localhost > http://localhost:3000
-npm start
+node seleneium_smoketests.js
 ```
 
 ## Installation2
@@ -58,5 +58,5 @@ nvm -v
 npm install
 
 # Local Host Run Site > localhost > http://localhost:3000
-npx cypress run
+npm start
 ```
