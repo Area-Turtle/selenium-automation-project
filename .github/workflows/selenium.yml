@@ -64,10 +64,9 @@ jobs:
           repository: Area-Turtle/selenium-automation-project  # Specify your selenium repository, if it's different from the main one
           # path: selenium-automation-project
           ref: main  # Optionally specify the branch for selenium tests
-          path: selenium
+          path: seleneium
       
       - name: Set up Node.js for selenium
-        working-directory: selenium
         uses: actions/setup-node@v4
         with:
           node-version: 24  # Specify the Node.js version (use the version your project uses)
@@ -78,16 +77,16 @@ jobs:
           ls -R
       - name: Install dependencies (selenium)
         run: npm install  # Installs the dependencies from package.json
-        # working-directory: selenium-automation-project
+        working-directory: seleneium
         env:
           MANPATH: /nonexistent
 
       - name: install chrome
-        working-directory: selenium
+        working-directory: seleneium
         uses: browser-actions/setup-chrome@v1
 
       - name: Run selenium test
-        working-directory: selenium
+        working-directory: seleneium
         run: node seleneium_smoketest.js
         env:
           BASE_URL: http://localhost:9292
