@@ -19,7 +19,6 @@ jobs:
           repository: Area-Turtle/selenium-automation-project  # Specify your selenium repository, if it's different from the main one
           path: selenium-automation-project
           ref: main  # Optionally specify the branch for selenium tests
-      
       - name: Checkout code (server repo)
         uses: actions/checkout@v5
         with:
@@ -45,7 +44,7 @@ jobs:
       - name: Health Check
         run: |
           for i in {1..30}; do
-            if curl -f http://localhost:3000; then
+            if curl -f http://localhost:9292; then
               echo "Server is up"
               exit 0
             fi
