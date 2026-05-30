@@ -74,7 +74,7 @@ jobs:
         uses: browser-actions/setup-chrome@v1
 
       - name: Run selenium test
-        working-directory: selenium-automation-project
+        # working-directory: selenium-automation-project
         run: node seleneium_smoketest.js 
         env:
           BASE_URL: http://localhost:9292
