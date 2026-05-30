@@ -52,6 +52,7 @@ jobs:
           exit 1
 
       - name: Show server log
+        working-directory: server
         if: always()
         run: cat server.log
 
