@@ -51,6 +51,10 @@ jobs:
       - name: Show server log
         if: always()
         run: cat server.log
+        
+      - name: Show homepage title
+        run: |
+          curl -s http://localhost:9292 | head -50
 
       - name: Checkout code (selenium repo)
         uses: actions/checkout@v5
