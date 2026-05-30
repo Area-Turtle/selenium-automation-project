@@ -33,7 +33,7 @@ jobs:
           bundler-cache: true
 
       - name: install ruby dependencies
-        working-directory: the-internet-server
+        # working-directory: the-internet-server
         run: gem install bundler -v 2.4.22
 
 
