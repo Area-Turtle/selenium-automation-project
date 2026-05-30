@@ -82,7 +82,6 @@ jobs:
           MANPATH: /nonexistent
 
       - name: install chrome
-        working-directory: seleneium
         uses: browser-actions/setup-chrome@v1
 
       - name: Run selenium test
