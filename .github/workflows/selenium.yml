@@ -56,9 +56,9 @@ jobs:
       #   if: always()
       #   run: cat server.log
 
-      - name: Show homepage title
-        run: |
-          curl -s http://localhost:9292 | head -50
+      # - name: Show homepage title
+      #   run: |
+      #     curl -s http://localhost:9292 | head -50
 
       - name: Checkout code (selenium repo)
         uses: actions/checkout@v5
@@ -91,5 +91,11 @@ jobs:
         run: node seleneium_smoketest.js
         env:
           BASE_URL: http://localhost:9292
+      - name: Generate Job Summary
+        if: always()
+        run: |
+          echo "# Selenium Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Tests completed" >> $GITHUB_STEP_SUMMARY
 
     
