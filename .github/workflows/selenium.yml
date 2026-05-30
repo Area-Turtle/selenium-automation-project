@@ -26,13 +26,13 @@ jobs:
 
       - name: Start The Internet Server
         run: |
-          bundle exec rackup -p 9292 > server.log 2>&1 &
+          bundle exec rackup -p 3000 > server.log 2>&1 &
           echo $! > server.pid
 
       - name: Health Check
         run: |
           for i in {1..30}; do
-            if curl -f http://localhost:9292; then
+            if curl -f http://localhost:3000; then
               echo "Server is up"
               exit 0
             fi
@@ -52,7 +52,7 @@ jobs:
       - name: Run Selenium Tests
         run: mvn clean test
         env:
-          BASE_URL: http://localhost:9292
+          BASE_URL: http://localhost:3000
 
 
   # selenium-run:
