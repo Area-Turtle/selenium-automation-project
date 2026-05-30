@@ -35,7 +35,8 @@ jobs:
           bundler-cache: true
 
       - name: install ruby dependencies
-        run: gem install bundler
+        run: gem install bundler -v 2.4.22
+
 
       - name: Start The Internet Server
         run: |
