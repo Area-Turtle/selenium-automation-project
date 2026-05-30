@@ -14,7 +14,6 @@ async function runSmokeTest() {
 
     try {
         await driver.get('http://localhost:9292/');
-        console.log(await driver.getPageSource());
         let title = await driver.getTitle();
         console.log("Page Title:", title);
 
