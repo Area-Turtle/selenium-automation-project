@@ -24,8 +24,9 @@ jobs:
         uses: actions/checkout@v5
         with:
           repository: Area-Turtle/the-internet.herokuapp.com.server  # Specify your server repository
-          path: the-internet.herokuapp.com.server
-          ref: main
+          path: 
+            the-internet.herokuapp.com.server
+          ref: master
 
       - name: setup Ruby
         uses: ruby/setup-ruby@v1
