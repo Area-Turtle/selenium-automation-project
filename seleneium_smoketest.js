@@ -43,7 +43,7 @@ async function runFindPageTitle() {
     try {
         await driver.get('http://localhost:9292/');
         let headTitle = await driver.getFindElement(
-            By.Css("h1.heading")
+            By.css("h1.heading")
         ).getText();
         console.log("heading:", headTitle);
 
