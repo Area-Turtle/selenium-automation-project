@@ -20,7 +20,7 @@ async function runSmokeTest() {
         if (title !== 'The Internet') {
             throw new Error(
                 `Expected title "The Internet" but found "${title}"`
-                
+
             );
         }
 
@@ -42,15 +42,17 @@ async function runFindPageTitle() {
 
     try {
         await driver.get('http://localhost:9292/');
-        let headTitle = await driver.getFindElement(
-            By.css("h1.heading")
-        ).getText();
+        const headTitle = await driver
+            .findElement(By.css('h1.heading'))
+            .getText();
+
+        console.log('Heading:', headTitle);
         console.log("heading:", headTitle);
 
         if (headTitle !== 'Welcome to the-internet') {
             throw new Error(
-                `Expected title "Welcome to the-internet" but found "${title}"`
-                
+                `Expected title "Welcome to the-internet" but found "${headTitle}"`
+
             );
         }
 
