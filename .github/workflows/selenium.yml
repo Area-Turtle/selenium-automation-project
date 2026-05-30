@@ -92,18 +92,6 @@ jobs:
         env:
           BASE_URL: http://localhost:9292
         
-      - name: Generate Job Summary
-        if: always()
-        run: |
-          echo "# Selenium Test Results" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- Tests completed" >> $GITHUB_STEP_SUMMARY
-      
-      - name: Generate report
-        run: |
-          mkdir -p reports
-          echo "<h1>Selenium Results</h1>" > reports/report.html
-          
       - name: Upload report
         uses: actions/upload-artifact@v4
         with:
