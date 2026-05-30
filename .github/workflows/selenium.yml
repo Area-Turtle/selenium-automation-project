@@ -13,7 +13,19 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout code (selenium repo)
+        uses: actions/checkout@v5
+        with:
+          repository: Area-Turtle/selenium-automation-project  # Specify your selenium repository, if it's different from the main one
+          path: selenium-automation-project
+          ref: main  # Optionally specify the branch for selenium tests
+      
+      - name: Checkout code (server repo)
+        uses: actions/checkout@v5
+        with:
+          repository: Area-Turtle/the-internet.herokuapp.com.server  # Specify your server repository
+          path: the-internet.herokuapp.com.server
+          ref: main
 
       - name: setup Ruby
         uses: ruby/setup-ruby@v1
@@ -74,7 +86,7 @@ jobs:
     #     with:
     #       repository: Area-Turtle/the-internet.herokuapp.com.server  # Specify your server repository
     #       path: test-juice-shop-server
-    #       ref: master
+    #       ref: main
 
     #   - name: Set up Node.js for selenium
     #     uses: actions/setup-node@v4
