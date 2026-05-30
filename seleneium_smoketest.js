@@ -13,7 +13,7 @@ async function runSmokeTest() {
         .build();
 
     try {
-        await driver.get('https://the-internet.herokuapp.com/');
+        await driver.get('http://localhost:9292');
 
         let title = await driver.getTitle();
         console.log("Page Title:", title);
