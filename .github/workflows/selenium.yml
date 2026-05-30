@@ -48,7 +48,7 @@ jobs:
           cat server.log
           exit 1
 
-            - name: Checkout code (selenium repo)
+      - name: Checkout code (selenium repo)
         uses: actions/checkout@v5
         with:
           repository: Area-Turtle/selenium-automation-project  # Specify your selenium repository, if it's different from the main one
