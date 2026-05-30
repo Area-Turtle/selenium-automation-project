@@ -9,6 +9,7 @@ function addSummary(text) {
     }
 }
 
+
 async function runSmokeTest(driver) {
     await driver.get('http://localhost:9292/');
 
@@ -56,13 +57,21 @@ async function runAllTests() {
         await runFindPageTitle(driver);
 
         console.log('✓ All tests passed');
+
     } catch (err) {
         addSummary('| ❌ Test Suite | Failed |');
         console.error(err);
-        process.exit(1);
+        process.exitCode = 1;
     } finally {
+        fs.mkdirSync('reports', { recursive: true });
+
+        fs.writeFileSync(
+            'reports/report.html',
+            '<h1>Selenium Results</h1>'
+        );
         await driver.quit();
     }
 }
 
 runAllTests();
+
