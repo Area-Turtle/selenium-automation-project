@@ -75,6 +75,7 @@ async function runFindItemCount(driver) {
     // for (let i = 0; i < items.length; i++) {
     //     console.log(`${i + 1}. ${await items[i].getText()}`);
     // }
+    console.log('Count:', items.length);
 
     if (items.length !== 45) {
         addSummary(`| Available Examples Count | Fail (${items.length}) |`);
@@ -137,7 +138,7 @@ async function runAllTests() {
             `;
         }).join('');
 
-        console.log('✓ All tests completed');
+        console.log('All tests completed');
 
     } catch (err) {
         addSummary('| Test Suite | Failed |');
@@ -145,6 +146,7 @@ async function runAllTests() {
         process.exitCode = 1;
 
     } finally {
+        fs.mkdirSync('reports', { recursive: true });
         fs.writeFileSync(
             filename,
             `
