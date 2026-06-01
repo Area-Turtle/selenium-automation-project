@@ -10,19 +10,20 @@ function addSummary(text) {
 }
 
 
-async function runSmokeTest(driver) {
+async function runMainTest(driver) {
     await driver.get('http://localhost:9292/');
 
     const title = await driver.getTitle();
     console.log("Page Title:", title);
 
     if (title !== 'The Internet') {
+        addSummary(`| Homepage Title |  Fail (${title}) |`);
         throw new Error(`Expected "The Internet" but got "${title}"`);
     }
 
-    addSummary('| Homepage Title | ✅ Pass |');
+    addSummary('| Homepage Title |  Pass |');
 }
-async function runFindPageTitle(driver) {
+async function runFindPageHeading(driver) {
     const heading = await driver
         .findElement(By.css('h1.heading'))
         .getText();
@@ -30,11 +31,42 @@ async function runFindPageTitle(driver) {
     console.log("Heading:", heading);
 
     if (heading !== 'Welcome to the-internet') {
+        addSummary(`| Heading Test |  Fail (${heading}) |`);
         throw new Error(`Expected heading but got "${heading}"`);
     }
 
-    addSummary('| Heading Test | ✅ Pass |');
+    addSummary('| Heading Test |  Pass |');
 }
+
+async function runFindSubHeading(driver) {
+    const heading = await driver
+        .findElement(By.css('h2'))
+        .getText();
+
+    console.log("Sub-Heading:", heading);
+    if (heading !== 'Available Examples') {
+        addSummary(`| Sub-Heading Test  |  Fail (${heading}) |`);
+        throw new Error(`Expected heading but got "${heading}"`);
+    }
+
+    addSummary('| Sub-Heading Test |  Pass |');
+}
+
+async function runFindItemCount(driver) {
+    const list = await driver.findElement(By.css('#content ul'));
+    const items = await list.findElements(By.tagName('li'));
+
+    console.log('Count:', items.length);
+
+    if (items.length !== 44) {
+        addSummary(`| Sub-Heading Test  |  Fail (${items.length}) |`);
+        throw new Error(`Expected 44 items but found ${items.length}`);
+    }
+
+    addSummary(`| Available Examples Count |  Pass (${items.length}) |`);
+}
+
+
 
 async function runAllTests() {
     let options = new chrome.Options();
@@ -53,13 +85,15 @@ async function runAllTests() {
         addSummary('| Test | Result |');
         addSummary('|------|--------|');
 
-        await runSmokeTest(driver);
-        await runFindPageTitle(driver);
+        await runMainTest(driver);
+        await runFindPageHeading(driver);
+        await runFindSubHeading(driver);
+        await runFindItemCount(driver);
 
         console.log('✓ All tests passed');
 
     } catch (err) {
-        addSummary('| ❌ Test Suite | Failed |');
+        addSummary('|  Test Suite | Failed |');
         console.error(err);
         process.exitCode = 1;
     } finally {
