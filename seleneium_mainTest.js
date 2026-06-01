@@ -9,7 +9,6 @@ function addSummary(text) {
     }
 }
 
-
 async function runMainTest(driver) {
     await driver.get('http://localhost:9292/');
 
@@ -19,9 +18,20 @@ async function runMainTest(driver) {
     if (title !== 'The Internet') {
         addSummary(`| Homepage Title |  Fail (${title}) |`);
         //throw new Error(`Expected "The Internet" but got "${title}"`);
+        return {
+            name: 'Homepage Title',
+            status: 'Fail',
+            value: title
+        };
     }
-
-    addSummary('| Homepage Title |  Pass |');
+    else {
+        addSummary('| Homepage Title |  Pass |');
+        return {
+            name: 'Homepage Title',
+            status: 'Pass',
+            value: title
+        };
+    }
 }
 async function runFindPageHeading(driver) {
     const heading = await driver
@@ -33,9 +43,12 @@ async function runFindPageHeading(driver) {
     if (heading !== 'Welcome to the-internet') {
         addSummary(`| Heading Test |  Fail (${heading}) |`);
         //throw new Error(`Expected heading but got "${heading}"`);
+        return { name: 'Heading Test', status: 'Fail', value: heading };
     }
-
-    addSummary('| Heading Test |  Pass |');
+    else {
+        addSummary('| Heading Test |  Pass |');
+        return { name: 'Heading Test', status: 'Pass', value: heading };
+    }
 }
 
 async function runFindSubHeading(driver) {
@@ -47,25 +60,40 @@ async function runFindSubHeading(driver) {
     if (heading !== 'Available Examples') {
         addSummary(`| Sub-Heading Test  |  Fail (${heading}) |`);
         //throw new Error(`Expected heading but got "${heading}"`);
+        return { name: 'Sub-Heading Test', status: 'Fail', value: heading };
     }
-
-    addSummary('| Sub-Heading Test |  Pass |');
+    else {
+        addSummary('| Sub-Heading Test |  Pass |');
+        return { name: 'Sub-Heading Test', status: 'Pass', value: heading };
+    }
 }
 
 async function runFindItemCount(driver) {
     const list = await driver.findElement(By.css('#content ul'));
     const items = await list.findElements(By.tagName('li'));
 
-    console.log('Count:', items.length);
+    for (let i = 0; i < items.length; i++) {
+        console.log(`${i + 1}. ${await items[i].getText()}`);
+    }
 
     if (items.length !== 44) {
         addSummary(`| Available Examples Count | Fail (${items.length}) |`);
         //throw new Error(`Expected 44 items but found ${items.length}`);
+        return {
+            name: 'Available Examples Count',
+            status: 'Fail',
+            value: items.length
+        };
     }
-
-    addSummary(`| Available Examples Count |  Pass (${items.length}) |`);
+    else {
+        addSummary(`| Available Examples Count |  Pass (${items.length}) |`);
+        return {
+            name: 'Available Examples Count',
+            status: 'Pass',
+            value: items.length
+        };
+    }
 }
-
 
 
 async function runAllTests() {
@@ -79,42 +107,63 @@ async function runAllTests() {
         .setChromeOptions(options)
         .build();
 
+    let results = [];
+    let rows = '';
+
     try {
         addSummary('# Selenium Test Results');
         addSummary('');
         addSummary('| Test | Result |');
         addSummary('|------|--------|');
 
-        await runMainTest(driver);
-        await runFindPageHeading(driver);
-        await runFindSubHeading(driver);
-        await runFindItemCount(driver);
+        results.push(await runMainTest(driver));
+        results.push(await runFindPageHeading(driver));
+        results.push(await runFindSubHeading(driver));
+        results.push(await runFindItemCount(driver));
 
-        console.log('✓ All tests passed');
+        rows = results.map(r => {
+            const color = r.status === 'Pass' ? 'green' : 'red';
+
+            return `
+                <tr>
+                    <td>${r.name}</td>
+                    <td style="color:${color}; font-weight:bold;">
+                        ${r.status}
+                    </td>
+                    <td>${r.value}</td>
+                </tr>
+            `;
+        }).join('');
+
+        console.log('✓ All tests completed');
 
     } catch (err) {
-        addSummary('|  Test Suite | Failed |');
+        addSummary('| Test Suite | Failed |');
         console.error(err);
         process.exitCode = 1;
+
     } finally {
         fs.mkdirSync('reports', { recursive: true });
 
         fs.writeFileSync(
             'reports/report.html',
             `
-    <html>
-      <body>
-        <h1>Selenium Results</h1>
-        <ul>
-          <li>Homepage Title: Pass</li>
-          <li>Heading Test: Pass</li>
-          <li>Sub-Heading Test: Pass</li>
-          <li>Available Examples Count: Pass</li>
-        </ul>
-      </body>
-    </html>
-    `
+            <html>
+              <body>
+                <h1>Selenium Results</h1>
+                <table border="1" cellpadding="8">
+                  <tr>
+                    <th>Test</th>
+                    <th>Status</th>
+                    <th>Value</th>
+                  </tr>
+                  ${rows}
+                </table>
+              </body>
+            </html>
+            `
         );
+
         await driver.quit();
     }
 }
