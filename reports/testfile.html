@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Selenium Test Report</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .meta {
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .pass {
+            color: green;
+            font-weight: bold;
+        }
+
+        .fail {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🧪 Selenium Test Results</h1>
+
+    <div class="meta">
+        <p><strong>Run Time:</strong> 2026-06-01 10:30:00</p>
+        <p><strong>Environment:</strong> GitHub Actions</p>
+        <p><strong>Base URL:</strong> http://localhost:9292</p>
+    </div>
+
+    <table>
+        <tr>
+            <th>Test Name</th>
+            <th>Status</th>
+            <th>Value</th>
+        </tr>
+
+        <tr>
+            <td>Homepage Title</td>
+            <td class="pass">PASS</td>
+            <td>The Internet</td>
+        </tr>
+
+        <tr>
+            <td>Heading Test</td>
+            <td class="pass">PASS</td>
+            <td>Welcome to the-internet</td>
+        </tr>
+
+        <tr>
+            <td>Sub-Heading Test</td>
+            <td class="pass">PASS</td>
+            <td>Available Examples</td>
+        </tr>
+
+        <tr>
+            <td>Available Examples Count</td>
+            <td class="fail">FAIL</td>
+            <td>45 (expected 44)</td>
+        </tr>
+
+    </table>
+
+</body>
+</html>
