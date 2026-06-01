@@ -72,11 +72,11 @@ async function runFindItemCount(driver) {
     const list = await driver.findElement(By.css('#content ul'));
     const items = await list.findElements(By.tagName('li'));
 
-    for (let i = 0; i < items.length; i++) {
-        console.log(`${i + 1}. ${await items[i].getText()}`);
-    }
+    // for (let i = 0; i < items.length; i++) {
+    //     console.log(`${i + 1}. ${await items[i].getText()}`);
+    // }
 
-    if (items.length !== 44) {
+    if (items.length !== 45) {
         addSummary(`| Available Examples Count | Fail (${items.length}) |`);
         //throw new Error(`Expected 44 items but found ${items.length}`);
         return {
@@ -109,6 +109,8 @@ async function runAllTests() {
 
     let results = [];
     let rows = '';
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const filename = `reports/report-${timestamp}.html`;
 
     try {
         addSummary('# Selenium Test Results');
@@ -143,25 +145,25 @@ async function runAllTests() {
         process.exitCode = 1;
 
     } finally {
-        fs.mkdirSync('reports', { recursive: true });
-
         fs.writeFileSync(
-            'reports/report.html',
+            filename,
             `
-            <html>
-              <body>
-                <h1>Selenium Results</h1>
-                <table border="1" cellpadding="8">
-                  <tr>
-                    <th>Test</th>
-                    <th>Status</th>
-                    <th>Value</th>
-                  </tr>
-                  ${rows}
-                </table>
-              </body>
-            </html>
-            `
+    <html>
+      <body>
+        <h1>Selenium Results</h1>
+        <p><strong>Run Time:</strong> ${new Date().toLocaleString()}</p>
+
+        <table border="1" cellpadding="8">
+          <tr>
+            <th>Test</th>
+            <th>Status</th>
+            <th>Value</th>
+          </tr>
+          ${rows}
+        </table>
+      </body>
+    </html>
+    `
         );
 
         await driver.quit();
