@@ -1,8 +1,9 @@
 const { Builder, By } = require('selenium-webdriver');
-const commonActions = require('./support/commonActions');
+const commonActions = require('../support/commonActions');
 
 console.log(commonActions);
 console.log(typeof commonActions.createDriver);
+console.log(require.resolve('./support/commonActions'));
 const BASE_URL = 'http://localhost:9292/';
 
 async function runMainTest(driver) {
