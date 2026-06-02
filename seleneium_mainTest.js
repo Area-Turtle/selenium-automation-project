@@ -1,9 +1,32 @@
 const { Builder, By } = require('selenium-webdriver');
+
+const fs = require('fs');
+const path = require('path');
+
+function printTree(dir, indent = '') {
+    const items = fs.readdirSync(dir);
+
+    for (const item of items) {
+        const fullPath = path.join(dir, item);
+        const stats = fs.statSync(fullPath);
+
+        console.log(indent + item);
+
+        if (stats.isDirectory()) {
+            printTree(fullPath, indent + '  ');
+        }
+    }
+}
+
+console.log('Working Directory:', process.cwd());
+printTree('.');
+
 const commonActions = require('./seleneium/support/commonActions.js');
 
 console.log(commonActions);
 console.log(typeof commonActions.createDriver);
 console.log(require.resolve('./support/commonActions'));
+
 const BASE_URL = 'http://localhost:9292/';
 
 async function runMainTest(driver) {
