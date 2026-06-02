@@ -21,8 +21,6 @@ const {
     addSummary
 } = require('./support/commonActions');
 
-console.log(commonActions);
-console.log(typeof commonActions.createDriver);
 console.log(require.resolve('./support/commonActions'));
 
 console.log("FILE PATH:", require.resolve('./support/commonActions'));
