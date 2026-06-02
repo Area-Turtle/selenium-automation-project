@@ -1,25 +1,18 @@
 const { Builder, By } = require('selenium-webdriver');
 
+console.log('cwd:', process.cwd());
+
 const fs = require('fs');
-const path = require('path');
 
-function printTree(dir, indent = '') {
-    const items = fs.readdirSync(dir);
+console.log('root files:', fs.readdirSync('.'));
 
-    for (const item of items) {
-        const fullPath = path.join(dir, item);
-        const stats = fs.statSync(fullPath);
-
-        console.log(indent + item);
-
-        if (stats.isDirectory()) {
-            printTree(fullPath, indent + '  ');
-        }
-    }
+if (fs.existsSync('./support')) {
+    console.log('support files:', fs.readdirSync('./support'));
 }
 
-console.log('Working Directory:', process.cwd());
-printTree('.');
+if (fs.existsSync('./seleneium')) {
+    console.log('seleneium files:', fs.readdirSync('./seleneium'));
+}
 
 const commonActions = require('./seleneium/support/commonActions.js');
 
