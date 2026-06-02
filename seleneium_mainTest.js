@@ -1,37 +1,10 @@
 const { Builder, By } = require('selenium-webdriver');
 
-console.log('cwd:', process.cwd());
-
 const fs = require('fs');
 
 // console.log('root files:', fs.readdirSync('.'));
 
-if (fs.existsSync('./support')) {
-    console.log('support files:', fs.readdirSync('./support'));
-}
-
-if (fs.existsSync('./seleneium')) {
-    console.log('seleneium files:', fs.readdirSync('./seleneium'));
-}
-
-const {
-    createDriver,
-    validate,
-    waitForVisible,
-    addSummary,
-    generateHtmlReport
-} = require('./support/commonActions');
-
-console.log(require.resolve('./support/commonActions'));
-
-console.log("FILE PATH:", require.resolve('./support/commonActions'));
-console.log("FILE CONTENT:");
-console.log(
-    require('fs').readFileSync(
-        require.resolve('./support/commonActions'),
-        'utf8'
-    )
-);
+const commonActions = require('./support/commonActions');
 
 const BASE_URL = 'http://localhost:9292/';
 
@@ -42,20 +15,20 @@ async function runMainTest(driver) {
     console.log("Page Title:", title);
 
     // test validate: (name, actual, and expected)
-    return validate(
+    return commonActions.validate(
         'Homepage Title',
         title,
         'The Internet'
     );
 }
 async function runFindPageHeading(driver) {
-    const element = await waitForVisible(driver, By.css('h1.heading'));
+    const element = await commonActions.waitForVisible(driver, By.css('h1.heading'));
     const heading = await element.getText();
 
     console.log("Heading:", heading);
 
     // test validate: (name, actual, and expected)
-    return validate(
+    return commonActions.validate(
         'Heading Test',
         heading,
         'Welcome to the-internet'
@@ -63,13 +36,13 @@ async function runFindPageHeading(driver) {
 }
 
 async function runFindSubHeading(driver) {
-    const element = await waitForVisible(driver, By.css('h2'));
+    const element = await commonActions.waitForVisible(driver, By.css('h2'));
     const heading = await element.getText();
 
     console.log("Sub-Heading:", heading);
 
     // test validate: (name, actual, and expected)
-    return validate(
+    return commonActions.validate(
         'Sub-Heading Test',
         heading,
         'Available Examples'
@@ -77,7 +50,7 @@ async function runFindSubHeading(driver) {
 }
 
 async function runFindItemCount(driver) {
-    const list = await waitForVisible(driver, By.css('#content ul'));
+    const list = await commonActions.waitForVisible(driver, By.css('#content ul'));
     const items = await list.findElements(By.css('li'));
 
     const count = items.length;
@@ -87,7 +60,7 @@ async function runFindItemCount(driver) {
 
     console.log('Count:', count);
 
-    return validate(
+    return commonActions.validate(
         'Available Examples Count',
         count,
         45
@@ -95,15 +68,15 @@ async function runFindItemCount(driver) {
 }
 
 async function runAllTests() {
-   const driver = await createDriver();
+    const driver = await commonActions.createDriver();
 
     let results = [];
 
     try {
-        addSummary('# Selenium Test Results');
-        addSummary('');
-        addSummary('| Test | Result |');
-        addSummary('|------|--------|');
+        commonActions.addSummary('# Selenium Test Results');
+        commonActions.addSummary('');
+        commonActions.addSummary('| Test | Result |');
+        commonActions.addSummary('|------|--------|');
 
         const tests = [
             runMainTest,
@@ -119,12 +92,12 @@ async function runAllTests() {
         console.log('All tests completed');
 
     } catch (err) {
-        addSummary('| Test Suite | Failed |');
+        commonActions.addSummary('| Test Suite | Failed |');
         console.error(err);
         process.exitCode = 1;
 
     } finally {
-        await generateHtmlReport(results);
+        await commonActions.generateHtmlReport(results);
         await driver.quit();
     }
 }
