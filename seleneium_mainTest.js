@@ -1,5 +1,5 @@
 const { Builder, By } = require('selenium-webdriver');
-const { createDriver, validate, waitForVisible, addSummary } = require('./support/commonActions');
+const { createDriver, validate, waitForVisible, addSummary } = require('../support/commonActions');
 const BASE_URL = 'http://localhost:9292/';
 console.log(commonActions);
 console.log(typeof commonActions.createDriver);
