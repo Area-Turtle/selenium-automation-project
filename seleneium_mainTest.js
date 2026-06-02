@@ -1,5 +1,5 @@
 const { Builder, By } = require('selenium-webdriver');
-const { createDriver, validate, waitForVisible, addSummary } = require('..selenium-automation-project/support/commonActions.js');
+const { createDriver, validate, waitForVisible, addSummary } = require('./support/commonActions');
 const BASE_URL = 'http://localhost:9292/';
 
 async function runMainTest(driver) {
