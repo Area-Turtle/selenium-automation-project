@@ -1,16 +1,9 @@
 const { Builder, By } = require('selenium-webdriver');
-const chrome = require('selenium-webdriver/chrome');
-
-const fs = require('fs');
-
-function addSummary(text) {
-    if (process.env.GITHUB_STEP_SUMMARY) {
-        fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, text + '\n');
-    }
-}
+const { createDriver, validate, waitForVisible,addSummary} = require('../support/commonActions');
+const BASE_URL = 'http://localhost:9292/';
 
 async function runMainTest(driver) {
-    await driver.get('http://localhost:9292/');
+    await driver.get(BASE_URL);
 
     const title = await driver.getTitle();
     console.log("Page Title:", title);
@@ -95,7 +88,6 @@ async function runFindItemCount(driver) {
         };
     }
 }
-
 
 async function runAllTests() {
     let options = new chrome.Options();
