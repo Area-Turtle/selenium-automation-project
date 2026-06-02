@@ -14,11 +14,25 @@ if (fs.existsSync('./seleneium')) {
     console.log('seleneium files:', fs.readdirSync('./seleneium'));
 }
 
-const commonActions = require('./support/commonActions');
+const {
+    createDriver,
+    validate,
+    waitForVisible,
+    addSummary
+} = require('./support/commonActions');
 
 console.log(commonActions);
 console.log(typeof commonActions.createDriver);
 console.log(require.resolve('./support/commonActions'));
+
+console.log("FILE PATH:", require.resolve('./support/commonActions'));
+console.log("FILE CONTENT:");
+console.log(
+    require('fs').readFileSync(
+        require.resolve('./support/commonActions'),
+        'utf8'
+    )
+);
 
 const BASE_URL = 'http://localhost:9292/';
 
@@ -82,7 +96,7 @@ async function runFindItemCount(driver) {
 }
 
 async function runAllTests() {
-   const driver = await commonActions.createDriver();
+   const driver = await createDriver();
 
     let results = [];
 
