@@ -18,7 +18,8 @@ const {
     createDriver,
     validate,
     waitForVisible,
-    addSummary
+    addSummary,
+    generateHtmlReport
 } = require('./support/commonActions');
 
 console.log(require.resolve('./support/commonActions'));

@@ -48,10 +48,54 @@ async function createDriver() {
         .setChromeOptions(options)
         .build();
 }
+async function generateHtmlReport(results) { 
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const filename = `reports/report-${timestamp}.html`;
 
+    fs.mkdirSync('reports', { recursive: true });
+
+    const rows = results.map(r => {
+        const color = r.status === 'Pass' ? 'green' : 'red';
+
+        return `
+            <tr>
+                <td>${r.name}</td>
+                <td style="color:${color}; font-weight:bold;">
+                    ${r.status}
+                </td>
+                <td>${r.value}</td>
+            </tr>
+        `;
+    }).join('');
+
+    const html = `
+    <html>
+      <body>
+        <h1>Selenium Results</h1>
+        <p><strong>Run Time:</strong> ${new Date().toLocaleString()}</p>
+
+        <table border="1" cellpadding="8">
+          <tr>
+            <th>Test</th>
+            <th>Status</th>
+            <th>Value</th>
+          </tr>
+          ${rows}
+        </table>
+      </body>
+    </html>
+    `;
+
+    fs.writeFileSync(filename, html);
+
+    console.log(`Report created: ${filename}`);
+
+    return filename;
+}
 module.exports = {
     addSummary,
     validate,
     waitForVisible,
-    createDriver
+    createDriver,
+    generateHtmlReport
 };
