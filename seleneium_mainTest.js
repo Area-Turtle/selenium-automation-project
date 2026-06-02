@@ -1,5 +1,5 @@
 const { Builder, By } = require('selenium-webdriver');
-const commonActions = require('../support/commonActions');
+const commonActions = require('./seleneium/support/commonActions.js');
 
 console.log(commonActions);
 console.log(typeof commonActions.createDriver);
@@ -66,7 +66,7 @@ async function runFindItemCount(driver) {
 }
 
 async function runAllTests() {
-   const driver = await createDriver();
+   const driver = await commonActions.createDriver();
 
     let results = [];
 
