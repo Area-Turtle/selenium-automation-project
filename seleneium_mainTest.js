@@ -4,7 +4,7 @@ console.log('cwd:', process.cwd());
 
 const fs = require('fs');
 
-console.log('root files:', fs.readdirSync('.'));
+// console.log('root files:', fs.readdirSync('.'));
 
 if (fs.existsSync('./support')) {
     console.log('support files:', fs.readdirSync('./support'));
