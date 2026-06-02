@@ -1,6 +1,6 @@
 const { Builder, By } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
-
+const commonActions = require('./support/commonActions');
 const fs = require('fs');
 
 function addSummary(text) {

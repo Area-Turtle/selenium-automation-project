@@ -63,7 +63,6 @@ async function generateHtmlReport(results) {
                 <td style="color:${color}; font-weight:bold;">
                     ${r.status}
                 </td>
-                <td>${r.value}</td>
             </tr>
         `;
     }).join('');
@@ -78,7 +77,6 @@ async function generateHtmlReport(results) {
           <tr>
             <th>Test</th>
             <th>Status</th>
-            <th>Value</th>
           </tr>
           ${rows}
         </table>
