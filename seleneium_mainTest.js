@@ -14,7 +14,7 @@ if (fs.existsSync('./seleneium')) {
     console.log('seleneium files:', fs.readdirSync('./seleneium'));
 }
 
-const commonActions = require('./seleneium/support/commonActions.js');
+const commonActions = require('./commonActions.js');;
 
 console.log(commonActions);
 console.log(typeof commonActions.createDriver);
