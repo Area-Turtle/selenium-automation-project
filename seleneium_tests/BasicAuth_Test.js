@@ -1,51 +1,33 @@
 const { Builder, By } = require('selenium-webdriver');
-const chrome = require('selenium-webdriver/chrome');
-const commonActions = require('./support/commonActions');
-const fs = require('fs');
+const commonActions = require('../support/commonActions');
+const BASE_URL = 'http://localhost:9292/';
+const elementCount = 1
 
-function addSummary(text) {
-    if (process.env.GITHUB_STEP_SUMMARY) {
-        fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, text + '\n');
-    }
-}
-async function runMainTest(driver) {
-    await driver.get('http://localhost:9292/');
+async function runARMainTest(driver) {
+    await driver.get(BASE_URL);
+    // <a href="/add_remove_elements/">Add/Remove Elements</a>
+    await driver.findElement(By.linkText('Add/Remove Elements')).click();
 
     const title = await driver.getTitle();
-    console.log("Page Title:", title);
+    console.log("Add/Remove Elements Head Title:", title);
 
-    if (title !== 'The Internet') {
-        addSummary(`| Homepage Title |  Fail (${title}) |`);
-        //throw new Error(`Expected "The Internet" but got "${title}"`);
-        return {
-            name: 'Homepage Title',
-            status: 'Fail',
-            value: title
-        };
-    }
-    else {
-        addSummary('| Homepage Title |  Pass |');
-        return {
-            name: 'Homepage Title',
-            status: 'Pass',
-            value: title
-        };
-    }
+    // test validate: (name, actual, and expected)
+    return validate(
+        'Add/Remove Elements Head Title',
+        title,
+        'The Internet'
+    );
 }
-async function runFindPageHeading(driver) {
-    const heading = await driver
-        .findElement(By.css('h1.heading'))
-        .getText();
+// async function runARFindPageHeading(driver) {
+//     const element = await waitForVisible(driver, By.css('h3.heading'));
+//     const heading = await element.getText();
 
-    console.log("Heading:", heading);
+//     console.log("H3 Heading:", heading);
 
-    if (heading !== 'Welcome to the-internet') {
-        addSummary(`| Heading Test |  Fail (${heading}) |`);
-        //throw new Error(`Expected heading but got "${heading}"`);
-        return { name: 'Heading Test', status: 'Fail', value: heading };
-    }
-    else {
-        addSummary('| Heading Test |  Pass |');
-        return { name: 'Heading Test', status: 'Pass', value: heading };
-    }
-}
+//     // test validate: (name, actual, and expected)
+//     return validate(
+//         'H3 Heading Test',
+//         heading,
+//         'Add/Remove Elements'
+//     );
+// }

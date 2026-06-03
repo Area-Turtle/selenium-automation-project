@@ -5,6 +5,7 @@ const fs = require('fs');
 // console.log('root files:', fs.readdirSync('.'));
 
 const commonActions = require('./support/commonActions');
+// const otherTests = require('./seleneium_tests/*')
 
 const BASE_URL = 'http://localhost:9292/';
 
