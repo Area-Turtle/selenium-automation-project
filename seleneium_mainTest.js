@@ -111,6 +111,7 @@ async function runBAFindPageHeading(driver) {
     );
 
     await driver.get(authUrl);
+    const element = await waitForVisible(driver, By.css('h3.heading'));
     const heading = await element.getText();
 
     console.log("H3 Heading:", heading);
