@@ -109,78 +109,40 @@ async function runBAFindPageHeading(driver) {
         'Basic Auth'
     );
 }
-async function safeRunTest(testName, testFn, results) {
-    console.log('results check:', Array.isArray(results), results);
-    try {
-        await testFn();
 
-        results.push({
-            test: testName,
-            status: 'PASS',
-            error: null
-        });
-
-        console.log(`PASS: ${testName}`);
-
-    } catch (err) {
-        results.push({
-            test: testName,
-            status: 'FAIL',
-            error: err.message || String(err)
-        });
-
-        console.error(`FAIL: ${testName}`);
-        console.error(err);
-    }
-}
 
 async function runAllTests() {
-    let results = [];
-    console.log('results type:', typeof results, Array.isArray(results));
     const driver = await commonActions.createDriver();
-
+    let results = [];
     try {
         commonActions.addSummary('# Selenium Test Results');
         commonActions.addSummary('');
         commonActions.addSummary('| Test | Result |');
         commonActions.addSummary('|------|--------|');
-
         const tests = [
-            ['Main Test', runMainTest],
-            ['Find Page Heading', runFindPageHeading],
-            ['Find Sub Heading', runFindSubHeading],
-            ['Find Item Count', runFindItemCount],
-            ['BA Main Test', runBAMainTest],
-            ['BA Find Page Heading', runBAFindPageHeading]
+            runMainTest,
+            runFindPageHeading,
+            runFindSubHeading,
+            runFindItemCount,
+            runBAMainTest,
+            runBAFindPageHeading
         ];
-
-        for (const [name, testFn] of tests) {
-            await safeRunTest(name, testFn, driver, results);
+        for (const test of tests) {
+            results.push(await test(driver));
         }
-
         console.log('All tests completed');
-
     } catch (err) {
         commonActions.addSummary('| Test Suite | Failed |');
-        console.error('Unexpected suite crash:', err);
-
-        results.push({
-            test: 'Test Suite',
-            status: 'FAIL',
-            error: err.stack || err.message
-        });
-
-        process.exitCode = 1;
-
+        console.error(err); process.exitCode = 1;
     } finally {
         try {
             await commonActions.generateHtmlReport(results);
         } catch (reportErr) {
             console.error('Failed to generate HTML report:', reportErr);
-        }
-
-        try {
-            if (driver) await driver.quit();
+        } try {
+            if (driver) {
+                await driver.quit();
+            }
         } catch (quitErr) {
             console.error('Error closing driver:', quitErr);
         }
