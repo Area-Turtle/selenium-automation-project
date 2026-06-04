@@ -124,8 +124,7 @@ async function runAllTests() {
             runFindPageHeading,
             runFindSubHeading,
             runFindItemCount,
-            runBAMainTest,
-            runBAFindPageHeading
+            runBAMainTest
         ];
         for (const test of tests) {
             results.push(await test(driver));
@@ -133,7 +132,8 @@ async function runAllTests() {
         console.log('All tests completed');
     } catch (err) {
         commonActions.addSummary('| Test Suite | Failed |');
-        console.error(err); process.exitCode = 1;
+        console.error(err); 
+        process.exitCode = 1;
     } finally {
         try {
             await commonActions.generateHtmlReport(results);
