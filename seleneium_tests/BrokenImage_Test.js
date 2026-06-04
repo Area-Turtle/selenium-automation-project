@@ -3,7 +3,7 @@ const commonActions = require('../support/commonActions');
 const BASE_URL = 'http://localhost:9292/';
 const elementCount = 1
 
-async function runARMainTest(driver) {
+async function runBIainTest(driver) {
     await driver.get(BASE_URL);
     // <a href="/add_remove_elements/">Add/Remove Elements</a>
     await driver.findElement(By.linkText('Broken Images')).click();
@@ -12,7 +12,7 @@ async function runARMainTest(driver) {
     console.log("Broken Images Head Title:", title);
 
     // test validate: (name, actual, and expected)
-    return validate(
+    return commonActions.validate(
         'Broken Images Head Title',
         title,
         'The Internet'
@@ -25,7 +25,7 @@ async function runARFindPageHeading(driver) {
     console.log("H3 Heading:", heading);
 
     // test validate: (name, actual, and expected)
-    return validate(
+    return commonActions.validate(
         'H3 Heading Test',
         heading,
         'Broken Images'

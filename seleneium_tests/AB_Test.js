@@ -1,6 +1,5 @@
 const { Builder, By } = require('selenium-webdriver');
 const commonActions = require('../support/commonActions');
-//const otherTests = require('./seleneium_tests/*')
 const BASE_URL = 'http://localhost:9292/';
 
 async function runABMainTest(driver) {
@@ -11,7 +10,7 @@ async function runABMainTest(driver) {
     console.log("A/B Test Head Title:", title);
 
     // test validate: (name, actual, and expected)
-    return validate(
+    return commonActions.validate(
         'A/B Test Head Title',
         title,
         'The Internet'
@@ -24,7 +23,7 @@ async function runABFindPageHeading(driver) {
     console.log("H3 Heading:", heading);
 
     // test validate: (name, actual, and expected)
-    return validate(
+    return commonActions.validate(
         'H3 Heading Test',
         heading,
         'A/B Test Control'

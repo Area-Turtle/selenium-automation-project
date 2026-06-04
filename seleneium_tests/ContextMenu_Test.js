@@ -3,7 +3,7 @@ const commonActions = require('../support/commonActions');
 const BASE_URL = 'http://localhost:9292/';
 const elementCount = 1
 
-async function runARMainTest(driver) {
+async function runCMMainTest(driver) {
     await driver.get(BASE_URL);
     // <a href="/add_remove_elements/">Add/Remove Elements</a>
     await driver.findElement(By.linkText('Context Menu')).click();
@@ -12,7 +12,7 @@ async function runARMainTest(driver) {
     console.log("Context Menu Head Title:", title);
 
     // test validate: (name, actual, and expected)
-    return validate(
+    return commonActions.validate(
         'Context Menu Head Title',
         title,
         'The Internet'
@@ -25,7 +25,7 @@ async function runARFindPageHeading(driver) {
     console.log("H3 Heading:", heading);
 
     // test validate: (name, actual, and expected)
-    return validate(
+    return commonActions.validate(
         'H3 Heading Test',
         heading,
         'Context Menu'

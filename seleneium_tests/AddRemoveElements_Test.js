@@ -12,7 +12,7 @@ async function runARMainTest(driver) {
     console.log("Add/Remove Elements Head Title:", title);
 
     // test validate: (name, actual, and expected)
-    return validate(
+    return commonActions.validate(
         'Add/Remove Elements Head Title',
         title,
         'The Internet'
@@ -25,7 +25,7 @@ async function runARFindPageHeading(driver) {
     console.log("H3 Heading:", heading);
 
     // test validate: (name, actual, and expected)
-    return validate(
+    return commonActions.validate(
         'H3 Heading Test',
         heading,
         'Add/Remove Elements'
@@ -39,7 +39,7 @@ async function runARAddElement(driver) {
     console.log("H3 Heading:", heading);
 
     // test validate: (name, actual, and expected)
-    return validate(
+    return commonActions.validate(
         'H3 Heading Test',
         heading,
         'Add/Remove Elements'
@@ -52,7 +52,7 @@ async function runARRemoveElement(driver) {
     console.log("H3 Heading:", heading);
 
     // test validate: (name, actual, and expected)
-    return validate(
+    return commonActions.validate(
         'H3 Heading Test',
         heading,
         'Add/Remove Elements'

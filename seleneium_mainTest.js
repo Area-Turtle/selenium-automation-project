@@ -82,17 +82,14 @@ async function runBAMainTest(driver) {
         'https://',
         'https://admin:admin@'
     );
-    
+
     await driver.get(authUrl);
-    // const permission = await driver.executeScript(`
-    //     return Notification.permission;
-    // `);
 
     const title = await driver.getTitle();
     console.log("Basic Auth Head Title:", title);
 
     // test validate: (name, actual, and expected)
-    return validate(
+    return commonActions.validate(
         'Basic Auth Head Title',
         title,
         'The Internet'
