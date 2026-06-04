@@ -96,14 +96,14 @@ async function runBAMainTest(driver) {
     );
 }
 async function runBAFindPageHeading(driver) {
-    
+
     const element = await waitForVisible(driver, By.css('h3.heading'));
     const heading = await element.getText();
 
     console.log("H3 Heading:", heading);
 
     // test validate: (name, actual, and expected)
-    return validate(
+    return commonActions.validate(
         'H3 Heading Test',
         heading,
         'Basic Auth'
@@ -143,8 +143,19 @@ async function runAllTests() {
         process.exitCode = 1;
 
     } finally {
-        await commonActions.generateHtmlReport(results);
-        await driver.quit();
+        try {
+            await commonActions.generateHtmlReport(results);
+        } catch (reportErr) {
+            console.error('Failed to generate HTML report:', reportErr);
+        }
+
+        try {
+            if (driver) {
+                await driver.quit();
+            }
+        } catch (quitErr) {
+            console.error('Error closing driver:', quitErr);
+        }
     }
 }
 
