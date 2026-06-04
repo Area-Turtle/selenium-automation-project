@@ -95,6 +95,7 @@ async function runBAMainTest(driver) {
         'The Internet'
     );
 }
+
 async function runBAFindPageHeading(driver) {
     await driver.get(BASE_URL);
     await driver.findElement(By.linkText('Basic Auth')).click();
@@ -115,7 +116,9 @@ async function runBAFindPageHeading(driver) {
     // console.log("new href:",authUrl)
     // await driver.get(authUrl);
 
-    const element = await commonActions.waitForVisible(driver, By.css('h3.heading'));
+    const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
+    // <div class="example">
+    //<h3>Basic Auth</h3>
     const heading = await element.getText();
 
     console.log("H3 Heading:", heading);
