@@ -135,10 +135,9 @@ async function safeRunTest(testName, testFn, results) {
 }
 
 async function runAllTests() {
+    let results = [];
     console.log('results type:', typeof results, Array.isArray(results));
     const driver = await commonActions.createDriver();
-
-    let results = [];
 
     try {
         commonActions.addSummary('# Selenium Test Results');
