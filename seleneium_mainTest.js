@@ -97,7 +97,7 @@ async function runBAMainTest(driver) {
 }
 async function runBAFindPageHeading(driver) {
 
-    const element = await waitForVisible(driver, By.css('h3.heading'));
+    const element = await commonActions.waitForVisible(driver, By.css('h3.heading'));
     const heading = await element.getText();
 
     console.log("H3 Heading:", heading);
@@ -109,7 +109,29 @@ async function runBAFindPageHeading(driver) {
         'Basic Auth'
     );
 }
+async function safeRunTest(testName, testFn, results) {
+    try {
+        await testFn();
 
+        results.push({
+            test: testName,
+            status: 'PASS',
+            error: null
+        });
+
+        console.log(`PASS: ${testName}`);
+
+    } catch (err) {
+        results.push({
+            test: testName,
+            status: 'FAIL',
+            error: err.message || String(err)
+        });
+
+        console.error(`FAIL: ${testName}`);
+        console.error(err);
+    }
+}
 
 async function runAllTests() {
     const driver = await commonActions.createDriver();
@@ -123,23 +145,30 @@ async function runAllTests() {
         commonActions.addSummary('|------|--------|');
 
         const tests = [
-            runMainTest,
-            runFindPageHeading,
-            runFindSubHeading,
-            runFindItemCount,
-            runBAMainTest,
-            runBAFindPageHeading
+            ['Main Test', runMainTest],
+            ['Find Page Heading', runFindPageHeading],
+            ['Find Sub Heading', runFindSubHeading],
+            ['Find Item Count', runFindItemCount],
+            ['BA Main Test', runBAMainTest],
+            ['BA Find Page Heading', runBAFindPageHeading]
         ];
 
-        for (const test of tests) {
-            results.push(await test(driver));
+        for (const [name, testFn] of tests) {
+            await safeRunTest(name, testFn, driver, results);
         }
 
         console.log('All tests completed');
 
     } catch (err) {
         commonActions.addSummary('| Test Suite | Failed |');
-        console.error(err);
+        console.error('Unexpected suite crash:', err);
+
+        results.push({
+            test: 'Test Suite',
+            status: 'FAIL',
+            error: err.stack || err.message
+        });
+
         process.exitCode = 1;
 
     } finally {
@@ -150,9 +179,7 @@ async function runAllTests() {
         }
 
         try {
-            if (driver) {
-                await driver.quit();
-            }
+            if (driver) await driver.quit();
         } catch (quitErr) {
             console.error('Error closing driver:', quitErr);
         }
