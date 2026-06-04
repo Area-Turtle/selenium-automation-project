@@ -111,11 +111,14 @@ async function runBAFindPageHeading(driver) {
     );
 
     await driver.get(authUrl);
+    console.log("new href:",authUrl)
+    await driver.get(authUrl);
+    
     const element = await commonActions.waitForVisible(driver, By.css('h3.heading'));
     const heading = await element.getText();
 
     console.log("H3 Heading:", heading);
-
+    
     // test validate: (name, actual, and expected)
     return commonActions.validate(
         'H3 Heading Test',
