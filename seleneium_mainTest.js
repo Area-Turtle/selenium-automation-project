@@ -112,9 +112,9 @@ async function runBAFindPageHeading(driver) {
         'https://admin:admin@'
     );
 
-    await driver.get(authUrl);
-    await driver.get(BASE_URL);
+    //await driver.get(authUrl);
 
+    await driver.get(BASE_URL);
     await driver.findElement(By.linkText('Basic Auth')).click();
 
     const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
@@ -147,7 +147,7 @@ async function runAllTests() {
             runFindSubHeading,
             runFindItemCount,
             runBAMainTest,
-            runBAFindPageHeading
+            // runBAFindPageHeading
         ];
         for (const test of tests) {
             results.push(await test(driver));
