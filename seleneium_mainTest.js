@@ -113,8 +113,9 @@ async function runBAFindPageHeading(driver) {
     );
 
     await driver.get(authUrl);
-    console.log("new href:",authUrl)
-    await driver.get(authUrl);
+    await driver.get(BASE_URL);
+
+    await driver.findElement(By.linkText('Basic Auth')).click();
 
     const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
     // <div class="example">
