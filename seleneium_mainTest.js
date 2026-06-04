@@ -98,23 +98,23 @@ async function runBAMainTest(driver) {
 
 async function runBAFindPageHeading(driver) {
     await driver.get(BASE_URL);
-    await driver.findElement(By.linkText('Basic Auth')).click();
+    //await driver.findElement(By.linkText('Basic Auth')).click();
     // <a href="/add_remove_elements/">Add/Remove Elements</a>
-    // const basicAuthLink = await driver.findElement(
-    //     By.linkText('Basic Auth')
-    // );
-    // const href = await basicAuthLink.getAttribute('href');
+    const basicAuthLink = await driver.findElement(
+        By.linkText('Basic Auth')
+    );
+    const href = await basicAuthLink.getAttribute('href');
 
-    // console.log("Original href:", href);
+    console.log("Original href:", href);
 
-    // const authUrl = href.replace(
-    //     'https://',
-    //     'https://admin:admin@'
-    // );
+    const authUrl = href.replace(
+        'https://',
+        'https://admin:admin@'
+    );
 
-    // await driver.get(authUrl);
-    // console.log("new href:",authUrl)
-    // await driver.get(authUrl);
+    await driver.get(authUrl);
+    console.log("new href:",authUrl)
+    await driver.get(authUrl);
 
     const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
     // <div class="example">
