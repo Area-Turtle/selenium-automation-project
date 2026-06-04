@@ -68,6 +68,46 @@ async function runFindItemCount(driver) {
     );
 }
 
+async function runBAMainTest(driver) {
+    await driver.get(BASE_URL);
+    // <a href="/add_remove_elements/">Add/Remove Elements</a>
+    const basicAuthLink = await driver.findElement(By.linkText('Basic Auth')).click();
+     const href = await basicAuthLink.getAttribute('href');
+
+    const authUrl = href.replace(
+        'https://',
+        'https://admin:admin@'
+    );
+    await driver.get(authUrl);
+    // const permission = await driver.executeScript(`
+    //     return Notification.permission;
+    // `);
+
+    const title = await driver.getTitle();
+    console.log("Basic Auth Head Title:", title);
+
+    // test validate: (name, actual, and expected)
+    return validate(
+        'Basic Auth Head Title',
+        title,
+        'The Internet'
+    );
+}
+async function runBAFindPageHeading(driver) {
+    const element = await waitForVisible(driver, By.css('h3.heading'));
+    const heading = await element.getText();
+
+    console.log("H3 Heading:", heading);
+
+    // test validate: (name, actual, and expected)
+    return validate(
+        'H3 Heading Test',
+        heading,
+        'Basic Auth'
+    );
+}
+
+
 async function runAllTests() {
     const driver = await commonActions.createDriver();
 
@@ -83,7 +123,8 @@ async function runAllTests() {
             runMainTest,
             runFindPageHeading,
             runFindSubHeading,
-            runFindItemCount
+            runFindItemCount,
+            runBAMainTest
         ];
 
         for (const test of tests) {
