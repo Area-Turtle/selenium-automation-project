@@ -110,6 +110,7 @@ async function runBAFindPageHeading(driver) {
     );
 }
 async function safeRunTest(testName, testFn, results) {
+    console.log('results check:', Array.isArray(results), results);
     try {
         await testFn();
 
@@ -134,6 +135,7 @@ async function safeRunTest(testName, testFn, results) {
 }
 
 async function runAllTests() {
+    console.log('results type:', typeof results, Array.isArray(results));
     const driver = await commonActions.createDriver();
 
     let results = [];
