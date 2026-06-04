@@ -96,6 +96,7 @@ async function runBAMainTest(driver) {
     );
 }
 async function runBAFindPageHeading(driver) {
+    
     const element = await waitForVisible(driver, By.css('h3.heading'));
     const heading = await element.getText();
 
@@ -126,7 +127,8 @@ async function runAllTests() {
             runFindPageHeading,
             runFindSubHeading,
             runFindItemCount,
-            runBAMainTest
+            runBAMainTest,
+            runBAFindPageHeading
         ];
 
         for (const test of tests) {
