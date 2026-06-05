@@ -15,8 +15,6 @@ function addSummary(text) {
 
 function validate(name, actual, expected) {
     const passed = actual === expected;
-    console.log(actual)
-    console.log(expected)
     addSummary(
         `| ${name} | ${expected} | ${actual} | ${passed ? 'Pass' : 'Fail'} |`
     );
