@@ -85,12 +85,18 @@ async function runABMainTest(driver) {
 async function runABFindPageHeading(driver) {
     await driver.get(BASE_URL);
     await driver.findElement(By.linkText('A/B Testing')).click();
-    await driver.wait(async () => {
-        const elements = await driver.findElements(
-            By.css('.example h3')
-        );
-        return elements.length > 0;
-    }, 10000);
+    // await driver.wait(async () => {
+    //     const elements = await driver.findElements(
+    //         By.css('.example h3')
+    //     );
+    //     return elements.length > 0;
+    // }, 10000);
+    const url = await driver.getCurrentUrl();
+    console.log(url);
+
+    const bodyHtml = await driver.executeScript("return document.body.innerHTML;");
+    console.log(bodyHtml);
+
     const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
     const heading = await element.getText();
     console.log("H3 Heading:", heading);
