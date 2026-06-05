@@ -96,39 +96,33 @@ async function runBAMainTest(driver) {
     );
 }
 
-async function runBAFindPageHeading(driver) {
+
+
+async function runABMainTest(driver) {
     await driver.get(BASE_URL);
-    //await driver.findElement(By.linkText('Basic Auth')).click();
-    // <a href="/add_remove_elements/">Add/Remove Elements</a>
-    const basicAuthLink = await driver.findElement(
-        By.linkText('Basic Auth')
+    await driver.findElement(By.linkText('A/B Testing')).click();
+
+    const title = await driver.getTitle();
+    console.log("A/B Test Head Title:", title);
+
+    // test validate: (name, actual, and expected)
+    return commonActions.validate(
+        'A/B Test Head Title',
+        title,
+        'The Internet'
     );
-    const href = await basicAuthLink.getAttribute('href');
-
-    console.log("Original href:", href);
-
-    const authUrl = href.replace(
-        'https://',
-        'https://admin:admin@'
-    );
-
-    //await driver.get(authUrl);
-
-    await driver.get(BASE_URL);
-    await driver.findElement(By.linkText('Basic Auth')).click();
-
+}
+async function runABFindPageHeading(driver) {
     const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
-    // <div class="example">
-    //<h3>Basic Auth</h3>
     const heading = await element.getText();
 
     console.log("H3 Heading:", heading);
-    
+
     // test validate: (name, actual, and expected)
     return commonActions.validate(
         'H3 Heading Test',
         heading,
-        'Basic Auth'
+        'A/B Test Control'
     );
 }
 
@@ -146,8 +140,6 @@ async function runAllTests() {
             runFindPageHeading,
             runFindSubHeading,
             runFindItemCount,
-            runBAMainTest,
-            // runBAFindPageHeading
         ];
         for (const test of tests) {
             results.push(await test(driver));

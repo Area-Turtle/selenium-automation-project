@@ -1,7 +1,7 @@
 const { Builder, By } = require('selenium-webdriver');
 const commonActions = require('../support/commonActions');
 const BASE_URL = 'http://localhost:9292/';
-const elementCount = 1
+
 
 async function runDEMainTest(driver) {
     await driver.get(BASE_URL);
@@ -19,7 +19,7 @@ async function runDEMainTest(driver) {
     );
 }
 async function runARFindPageHeading(driver) {
-    const element = await waitForVisible(driver, By.css('h3.heading'));
+    const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
     const heading = await element.getText();
 
     console.log("H3 Heading:", heading);

@@ -17,7 +17,7 @@ async function runABMainTest(driver) {
     );
 }
 async function runABFindPageHeading(driver) {
-    const element = await waitForVisible(driver, By.css('h3.heading'));
+    const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
     const heading = await element.getText();
 
     console.log("H3 Heading:", heading);

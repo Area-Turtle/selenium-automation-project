@@ -1,19 +1,20 @@
 const { Builder, By } = require('selenium-webdriver');
 const commonActions = require('../support/commonActions');
 const BASE_URL = 'http://localhost:9292/';
+const pageTopic = 'Exit Intent';
 
 
-async function runDAMainTest(driver) {
+async function runDEMainTest(driver) {
     await driver.get(BASE_URL);
     // <a href="/add_remove_elements/">Add/Remove Elements</a>
-    await driver.findElement(By.linkText('Digest Authentication')).click();
+    await driver.findElement(By.linkText(pageTopic)).click();
 
     const title = await driver.getTitle();
-    console.log("Digest Authentication Head Title:", title);
+    console.log(`(${pageTopic}) Head Title:`, title);
 
     // test validate: (name, actual, and expected)
     return commonActions.validate(
-        'Digest Authentication Head Title',
+        `(${pageTopic}) Head Title`,
         title,
         'The Internet'
     );
@@ -28,6 +29,6 @@ async function runARFindPageHeading(driver) {
     return commonActions.validate(
         'H3 Heading Test',
         heading,
-        'Digest Authentication'
+        pageTopic
     );
 }
