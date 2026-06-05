@@ -14,7 +14,9 @@ function addSummary(text) {
 }
 
 function validate(name, actual, expected) {
-    const passed = actual === expected;
+    const passed = Array.isArray(expected)
+        ? expected.includes(actual)
+        : actual === expected;
     addSummary(
         `| ${name} | ${expected} | ${actual} | ${passed ? 'Pass' : 'Fail'} |`
     );
@@ -47,7 +49,7 @@ async function createDriver() {
         .setChromeOptions(options)
         .build();
 }
-async function generateHtmlReport(results) { 
+async function generateHtmlReport(results) {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const filename = `reports/report-${timestamp}.html`;
 

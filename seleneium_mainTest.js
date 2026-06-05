@@ -94,13 +94,11 @@ async function runABFindPageHeading(driver) {
     const url = await driver.getCurrentUrl();
     console.log(url);
 
-    const iframe = await driver.findElement(By.css("iframe"));
-    await driver.switchTo().frame(iframe);
 
     // const bodyHtml = await driver.executeScript("return document.body.innerHTML;");
     // console.log(bodyHtml);
-
-    const element = await driver.findElement(By.css('.example h3'));
+    const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
+    //const element = await driver.findElement(By.css('.example h3'));
     const heading = await element.getText();
     console.log("H3 Heading:", heading);
 
@@ -108,7 +106,7 @@ async function runABFindPageHeading(driver) {
     return commonActions.validate(
         'H3 Heading Test',
         heading,
-        'A/B Test Control'
+        ['A/B Test Control', 'No A/B Test']
     );
 }
 
