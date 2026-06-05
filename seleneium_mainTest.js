@@ -93,14 +93,17 @@ async function runABFindPageHeading(driver) {
     // }, 10000);
     const url = await driver.getCurrentUrl();
     console.log(url);
+
     const iframe = await driver.findElement(By.css("iframe"));
     await driver.switchTo().frame(iframe);
-    const bodyHtml = await driver.executeScript("return document.body.innerHTML;");
-    console.log(bodyHtml);
 
-    const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
+    // const bodyHtml = await driver.executeScript("return document.body.innerHTML;");
+    // console.log(bodyHtml);
+
+    const element = await driver.findElement(By.css('.example h3'));
     const heading = await element.getText();
     console.log("H3 Heading:", heading);
+
     // test validate: (name, actual, and expected)
     return commonActions.validate(
         'H3 Heading Test',
