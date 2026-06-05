@@ -85,8 +85,10 @@ async function runABMainTest(driver) {
 async function runABFindPageHeading(driver) {
     await driver.get(BASE_URL);
     await driver.findElement(By.linkText('A/B Testing')).click();
-    await driver.sleep(5000);
-    const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
+    const element = await driver.wait(
+        until.elementLocated(By.css('.example h3')),
+        10000
+    );
     const heading = await element.getText();
     console.log("H3 Heading:", heading);
 
