@@ -93,11 +93,8 @@ async function runABFindPageHeading(driver) {
     // }, 10000);
     const url = await driver.getCurrentUrl();
     console.log(url);
-    await driver.wait(async () => {
-    return await driver.executeScript(
-        "return document.readyState"
-    ) === "complete";
-}, 10000);
+    const iframe = await driver.findElement(By.css("iframe"));
+    await driver.switchTo().frame(iframe);
     const bodyHtml = await driver.executeScript("return document.body.innerHTML;");
     console.log(bodyHtml);
 
