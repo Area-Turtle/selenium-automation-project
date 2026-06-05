@@ -4,7 +4,7 @@ const BASE_URL = 'http://localhost:9292/';
 const pageTopic = 'File Upload';
 
 
-async function runDEMainTest(driver) {
+async function runFDMainTest(driver) {
     await driver.get(BASE_URL);
     // <a href="/add_remove_elements/">Add/Remove Elements</a>
     await driver.findElement(By.linkText(pageTopic)).click();
@@ -19,7 +19,7 @@ async function runDEMainTest(driver) {
         'The Internet'
     );
 }
-async function runARFindPageHeading(driver) {
+async function runFDFindPageHeading(driver) {
     const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
     const heading = await element.getText();
 

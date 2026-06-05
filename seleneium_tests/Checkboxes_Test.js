@@ -18,7 +18,7 @@ async function runCBMainTest(driver) {
         'The Internet'
     );
 }
-async function runARFindPageHeading(driver) {
+async function runCBFindPageHeading(driver) {
     const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
     const heading = await element.getText();
 
