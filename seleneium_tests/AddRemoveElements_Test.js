@@ -18,43 +18,113 @@ async function runARMainTest(driver) {
         'The Internet'
     );
 }
+
 async function runARFindPageHeading(driver) {
-    const element = await waitForVisible(driver, By.css('h3.heading'));
+    await driver.get(BASE_URL);
+    await driver.findElement(By.linkText('Add/Remove Elements')).click();
+    const element = await waitForVisible(driver, By.css('h3'));
     const heading = await element.getText();
 
-    console.log("H3 Heading:", heading);
+    console.log("Add/Remove H3 Heading:", heading);
 
     // test validate: (name, actual, and expected)
     return commonActions.validate(
-        'H3 Heading Test',
+        'Add/Remove H3 Heading Test',
         heading,
         'Add/Remove Elements'
     );
 }
+
 async function runARAddElement(driver) {
+    await driver.get(BASE_URL);
+    await driver.findElement(By.linkText('Add/Remove Elements')).click();
 
-    const element = await waitForVisible(driver, By.css('h3.heading'));
+    //<button onclick="addElement()">Add Element</button>
+    const element = await driver.findElement(By.css('button[onclick="addElement()"]')).click();
+
+    //#content > div > button
     const heading = await element.getText();
 
-    console.log("H3 Heading:", heading);
+    const deleteButton = await driver.findElement(By.css('button.added-manually'));
+
+    const hasMoreThanOne = deleteButtons.length > 1;
+
+    console.log(hasMoreThanOne);
+
+    console.log("Add Button:", heading);
 
     // test validate: (name, actual, and expected)
     return commonActions.validate(
-        'H3 Heading Test',
+        'Add/Remove H3 Heading Test',
         heading,
-        'Add/Remove Elements'
+        'Add Element'
     );
 }
+
 async function runARRemoveElement(driver) {
-    const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
-    const heading = await element.getText();
+    await driver.get(BASE_URL);
+    await driver.findElement(By.linkText('Add/Remove Elements')).click();
 
-    console.log("H3 Heading:", heading);
+    //<button onclick="addElement()">Add Element</button>
+        const addButton = await driver.findElement(
+        By.css('button[onclick="addElement()"]')
+    );
 
+    //#content > div > button
+    console.log('Add Button:', await addButton.getText());
+
+    // const heading = await element.getText();
+    console.log("Add Button:", heading);
+
+    // const deleteButtons = await driver.findElement(By.css('button.added-manually')).click();
+    const deleteButton = await driver.findElement(
+        By.css('button.added-manually')
+    );
+    await deleteButton.click();
+    // await driver.findElements(
+    //     By.css('#elements button.added-manually')
+    // );
+
+    // const isEmpty = deleteButtons.length === 0;
+    
+    // console.log(await deleteButtons.isDisplayed());
+        const remainingButtons = await driver.findElements(
+        By.css('#elements button.added-manually')
+    );
+     const isEmpty = remainingButtons.length === 0;
+
+    console.log('Container empty:', isEmpty);
+    //await driver.findElement(By.css('button.added-manually')).click();
     // test validate: (name, actual, and expected)
     return commonActions.validate(
-        'H3 Heading Test',
+        'Delete Button Removed Test',
+        isEmpty,
+        true
+    );
+}
+async function runARAddMultipleElement(driver) {
+    await driver.get(BASE_URL);
+    await driver.findElement(By.linkText('Add/Remove Elements')).click();
+
+    //<button onclick="addElement()">Add Element</button>
+    const element = await driver.findElement(By.css('button[onclick="addElement()"]')).click();
+
+    //#content > div > button
+    const heading = await element.getText();
+
+    const addButtons = await driver.findElements(
+        By.css('#elements button.added-manually')
+    );
+    console.log('Count:', addButtons.length);
+    const hasMoreThanOne = addButtons.length > 1;
+    
+    console.log(hasMoreThanOne);
+
+    console.log("Add Button:", heading);
+
+    return commonActions.validate(
+        'Add button Test',
         heading,
-        'Add/Remove Elements'
+        'Add Element'
     );
 }
