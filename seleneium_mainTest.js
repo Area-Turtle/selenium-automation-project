@@ -107,7 +107,8 @@ async function runARAddElement(driver) {
     console.log('Current URL:', currentUrl);
     //<button onclick="addElement()">Add Element</button>
     //commonActions.waitForVisible(driver, By.css('button[onclick="addElement()"]')).click();
-    const addButton = await driver.findElement(
+    const addButton = await commonActions.waitForVisible(
+        driver,
         By.css('button[onclick="addElement()"]')
     );
     const heading = await addButton.getText();
@@ -115,7 +116,7 @@ async function runARAddElement(driver) {
 
     await addButton.click();
     //#content > div > button
-    
+
     //await commonActions.waitForVisible(driver, By.css('button.added-manually')).click();
     //const deleteButton = await driver.findElement(By.css('button.added-manually'));
     const hasMoreThanOne = await driver.findElements(
@@ -140,10 +141,10 @@ async function runARRemoveElement(driver) {
     await driver.findElement(By.linkText('Add/Remove Elements')).click();
 
     //<button onclick="addElement()">Add Element</button>
-    const addButton = await commonActions.waitForVisible(driver, By.css('button[onclick="addElement()"]')).click();
-
+    const addButton = await commonActions.waitForVisible(driver, By.css('button[onclick="addElement()"]'))
     //#content > div > button
     console.log('Add Button:', await addButton.getText());
+    await addButton.click();
 
     // const heading = await element.getText();
     // console.log("Add Button:", heading);
@@ -152,18 +153,19 @@ async function runARRemoveElement(driver) {
     const deleteButton = await commonActions.waitForVisible(driver,
         By.css('button.added-manually')
     );
+    console.log('Delete Button: ', await deleteButton.getText())
     await deleteButton.click();
     // await driver.findElements(
     //     By.css('#elements button.added-manually')
     // );
 
     // const isEmpty = deleteButtons.length === 0;
-    
+
     // console.log(await deleteButtons.isDisplayed());
     const remainingButtons = await commonActions.waitForVisible(driver,
         By.css('#elements button.added-manually')
     );
-     const isEmpty = remainingButtons.length === 0;
+    const isEmpty = remainingButtons.length === 0;
 
     console.log('Container empty:', isEmpty);
     //await driver.findElement(By.css('button.added-manually')).click();
