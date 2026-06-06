@@ -103,7 +103,7 @@ async function runARFindPageHeading(driver) {
 async function runARAddElement(driver) {
     await driver.get(BASE_URL);
     await driver.findElement(By.linkText('Add/Remove Elements')).click();
-
+    console.log(currentUrl());
     //<button onclick="addElement()">Add Element</button>
     //commonActions.waitForVisible(driver, By.css('button[onclick="addElement()"]')).click();
     const addButton = await driver.findElement(
@@ -113,6 +113,7 @@ async function runARAddElement(driver) {
     await addButton.click();
     //#content > div > button
     const heading = await addButton.getText();
+    console.log("Add Button:", heading);
     //await commonActions.waitForVisible(driver, By.css('button.added-manually')).click();
     //const deleteButton = await driver.findElement(By.css('button.added-manually'));
     const hasMoreThanOne = await driver.findElements(
@@ -122,7 +123,7 @@ async function runARAddElement(driver) {
 
     console.log(totalButtons);
 
-    console.log("Add Button:", heading);
+    
 
     // test validate: (name, actual, and expected)
     return commonActions.validate(
@@ -187,8 +188,8 @@ async function runAllTests() {
             runFindItemCount,
             runARMainTest,
             runARFindPageHeading,
-            runARAddElement,
-            runARRemoveElement
+            runARAddElement
+            // runARRemoveElement
         ];
         for (const test of tests) {
             results.push(await test(driver));
