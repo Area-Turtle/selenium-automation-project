@@ -192,8 +192,8 @@ async function runAllTests() {
             runFindItemCount,
             runARMainTest,
             runARFindPageHeading,
-            runARAddElement
-            // runARRemoveElement
+            runARAddElement,
+            runARRemoveElement
         ];
         for (const test of tests) {
             results.push(await test(driver));
