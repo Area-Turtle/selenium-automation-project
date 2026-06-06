@@ -106,24 +106,29 @@ async function runARAddElement(driver) {
 
     //<button onclick="addElement()">Add Element</button>
     //commonActions.waitForVisible(driver, By.css('button[onclick="addElement()"]')).click();
-    const element = await commonActions.waitForVisible(driver, By.css('button[onclick="addElement()"]')).click();
+    const addButton = await driver.findElement(
+        By.css('button[onclick="addElement()"]')
+    );
 
+    await addButton.click();
     //#content > div > button
-    const heading = await element.getText();
+    const heading = await addButton.getText();
     //await commonActions.waitForVisible(driver, By.css('button.added-manually')).click();
     //const deleteButton = await driver.findElement(By.css('button.added-manually'));
+    const hasMoreThanOne = await driver.findElements(
+        By.css('#elements button.added-manually')
+    );
+    const totalButtons = hasMoreThanOne.length > 1;
 
-    const hasMoreThanOne = deleteButtons.length > 1;
-
-    console.log(hasMoreThanOne);
+    console.log(totalButtons);
 
     console.log("Add Button:", heading);
 
     // test validate: (name, actual, and expected)
     return commonActions.validate(
-        'Add/Remove H3 Heading Test',
-        heading,
-        'Add Element'
+        'Add Button Added',
+        totalButtons,
+        true
     );
 }
 
