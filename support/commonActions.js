@@ -14,6 +14,7 @@ function addSummary(text) {
 }
 
 function validate(name, actual, expected) {
+    console.log('VALIDATE INPUT:', actual);
     const passed = Array.isArray(expected)
         ? expected.includes(actual)
         : actual === expected;
