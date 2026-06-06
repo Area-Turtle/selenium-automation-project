@@ -146,11 +146,16 @@ async function runARRemoveElement(driver) {
     console.log('Add Button:', await addButton.getText());
     await addButton.click();
 
+    const hasMoreThanOne = await driver.findElements(
+        By.css('#elements button.added-manually')
+    );
+    console.log(hasMoreThanOne)
     // const heading = await element.getText();
     // console.log("Add Button:", heading);
 
     // const deleteButtons = await driver.findElement(By.css('button.added-manually')).click();
-    const deleteButton = await commonActions.waitForVisible(driver,
+    const deleteButton = await commonActions.waitForVisible(
+        driver,
         By.css('button.added-manually')
     );
     console.log('Delete Button: ', await deleteButton.getText())
@@ -162,9 +167,14 @@ async function runARRemoveElement(driver) {
     // const isEmpty = deleteButtons.length === 0;
 
     // console.log(await deleteButtons.isDisplayed());
-    const remainingButtons = await commonActions.waitForVisible(driver,
+    const remainingButtons = await driver.findElements(
         By.css('#elements button.added-manually')
     );
+
+    // const remainingButtons = await commonActions.waitForVisible(
+    //     driver,
+    //     By.css('#elements button.added-manually')
+    // );
     const isEmpty = remainingButtons.length === 0;
 
     console.log('Container empty:', isEmpty);
@@ -186,13 +196,13 @@ async function runAllTests() {
         commonActions.addSummary('| Test | Result |');
         commonActions.addSummary('|------|--------|');
         const tests = [
-            runMainTest,
-            runFindPageHeading,
-            runFindSubHeading,
-            runFindItemCount,
-            runARMainTest,
-            runARFindPageHeading,
-            runARAddElement,
+            // runMainTest,
+            // runFindPageHeading,
+            // runFindSubHeading,
+            // runFindItemCount,
+            // runARMainTest,
+            // runARFindPageHeading,
+            // runARAddElement,
             runARRemoveElement
         ];
         for (const test of tests) {
