@@ -87,7 +87,7 @@ async function runARMainTest(driver) {
 async function runARFindPageHeading(driver) {
     await driver.get(BASE_URL);
     await driver.findElement(By.linkText('Add/Remove Elements')).click();
-    const element = await waitForVisible(driver, By.css('h3'));
+    const element = await commonActions.waitForVisible(driver, By.css('h3'));
     const heading = await element.getText();
 
     console.log("Add/Remove H3 Heading:", heading);
@@ -105,12 +105,13 @@ async function runARAddElement(driver) {
     await driver.findElement(By.linkText('Add/Remove Elements')).click();
 
     //<button onclick="addElement()">Add Element</button>
-    const element = await driver.findElement(By.css('button[onclick="addElement()"]')).click();
+    //commonActions.waitForVisible(driver, By.css('button[onclick="addElement()"]')).click();
+    const element = await commonActions.waitForVisible(driver, By.css('button[onclick="addElement()"]')).click();
 
     //#content > div > button
     const heading = await element.getText();
-
-    const deleteButton = await driver.findElement(By.css('button.added-manually'));
+    //await commonActions.waitForVisible(driver, By.css('button.added-manually')).click();
+    //const deleteButton = await driver.findElement(By.css('button.added-manually'));
 
     const hasMoreThanOne = deleteButtons.length > 1;
 
@@ -131,18 +132,16 @@ async function runARRemoveElement(driver) {
     await driver.findElement(By.linkText('Add/Remove Elements')).click();
 
     //<button onclick="addElement()">Add Element</button>
-        const addButton = await driver.findElement(
-        By.css('button[onclick="addElement()"]')
-    );
+    const addButton = await commonActions.waitForVisible(driver, By.css('button[onclick="addElement()"]')).click();
 
     //#content > div > button
     console.log('Add Button:', await addButton.getText());
 
     // const heading = await element.getText();
-    console.log("Add Button:", heading);
+    // console.log("Add Button:", heading);
 
     // const deleteButtons = await driver.findElement(By.css('button.added-manually')).click();
-    const deleteButton = await driver.findElement(
+    const deleteButton = await commonActions.waitForVisible(driver,
         By.css('button.added-manually')
     );
     await deleteButton.click();
@@ -153,7 +152,7 @@ async function runARRemoveElement(driver) {
     // const isEmpty = deleteButtons.length === 0;
     
     // console.log(await deleteButtons.isDisplayed());
-        const remainingButtons = await driver.findElements(
+    const remainingButtons = await commonActions.waitForVisible(driver,
         By.css('#elements button.added-manually')
     );
      const isEmpty = remainingButtons.length === 0;
