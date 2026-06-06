@@ -184,12 +184,12 @@ async function runAllTests() {
         commonActions.addSummary('| Test | Result |');
         commonActions.addSummary('|------|--------|');
         const tests = [
-            // runMainTest,
-            // runFindPageHeading,
-            // runFindSubHeading,
-            // runFindItemCount,
-            // runARMainTest,
-            // runARFindPageHeading,
+            runMainTest,
+            runFindPageHeading,
+            runFindSubHeading,
+            runFindItemCount,
+            runARMainTest,
+            runARFindPageHeading,
             runARAddElement
             // runARRemoveElement
         ];
