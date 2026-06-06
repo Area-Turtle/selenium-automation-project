@@ -103,7 +103,8 @@ async function runARFindPageHeading(driver) {
 async function runARAddElement(driver) {
     await driver.get(BASE_URL);
     await driver.findElement(By.linkText('Add/Remove Elements')).click();
-    console.log(currentUrl());
+    const currentUrl = await driver.getCurrentUrl();
+    console.log('Current URL:', currentUrl);
     //<button onclick="addElement()">Add Element</button>
     //commonActions.waitForVisible(driver, By.css('button[onclick="addElement()"]')).click();
     const addButton = await driver.findElement(
