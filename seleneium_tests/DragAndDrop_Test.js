@@ -20,6 +20,9 @@ async function runDADMainTest(driver) {
     );
 }
 async function runDADFindPageHeading(driver) {
+        await driver.get(BASE_URL);
+    // <a href="/add_remove_elements/">Add/Remove Elements</a>
+    await driver.findElement(By.linkText(pageTopic)).click();
     const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
     const heading = await element.getText();
 

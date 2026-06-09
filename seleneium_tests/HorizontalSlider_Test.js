@@ -1,10 +1,10 @@
 const { Builder, By } = require('selenium-webdriver');
 const commonActions = require('../support/commonActions');
 const BASE_URL = 'http://localhost:9292/';
-const pageTopic = 'Entry Ad';
+const pageTopic = 'Horizontal Slider';
 
 
-async function runEAMainTest(driver) {
+async function runFDMainTest(driver) {
     await driver.get(BASE_URL);
     // <a href="/add_remove_elements/">Add/Remove Elements</a>
     await driver.findElement(By.linkText(pageTopic)).click();
@@ -19,7 +19,7 @@ async function runEAMainTest(driver) {
         'The Internet'
     );
 }
-async function runEAFindPageHeading(driver) {
+async function runFDFindPageHeading(driver) {
         await driver.get(BASE_URL);
         // <a href="/add_remove_elements/">Add/Remove Elements</a>
         await driver.findElement(By.linkText(pageTopic)).click();
