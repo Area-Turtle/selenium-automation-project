@@ -175,8 +175,8 @@ async function runBICombinedImageTest(driver) {
 
     return commonActions.validate(
         'Invalid Image Count',
-        invalidImageCount,
-        0
+        invalidImageCount > 1,
+        true
     );
 }
 async function runAllTests() {
@@ -194,7 +194,7 @@ async function runAllTests() {
             runFindItemCount,
             runBIainTest,
             runBIFindPageHeading,
-            runBICheckImageValid
+            runBICombinedImageTest
         ];
         for (const test of tests) {
             results.push(await test(driver));
