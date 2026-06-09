@@ -99,36 +99,86 @@ async function runBIFindPageHeading(driver) {
         'Broken Images'
     );
 }
-async function runBICheckImageValid(driver) {
+async function runBICombinedImageTest(driver) {
     await driver.get(BASE_URL);
     await driver.findElement(By.linkText('Broken Images')).click();
 
-    const image = await driver.findElement(
-        By.css('img[src*="asdf.jpg"]')
-    );
+    const images = await driver.findElements(By.tagName('img'));
 
-    const details = await driver.executeScript(`
-        return {
-            src: arguments[0].src,
-            complete: arguments[0].complete,
-            naturalWidth: arguments[0].naturalWidth,
-            naturalHeight: arguments[0].naturalHeight,
-            isBroken: arguments[0].complete &&
-                      arguments[0].naturalWidth === 0
-        };
-    `, image);
+    let invalidImageCount = 0;
 
-    console.log('Image Details:', details);
+    const expectedHost = new URL(BASE_URL).hostname;
+
+    for (const img of images) {
+        const src = await img.getAttribute('src');
+
+        let isInvalid = false;
+
+        try {
+            // 1. DOM broken check (image failed to render)
+            const domBroken = await driver.executeScript(`
+                return arguments[0].complete &&
+                       arguments[0].naturalWidth === 0;
+            `, img);
+
+            if (domBroken) {
+                isInvalid = true;
+            }
+
+            // 2. HTTP validation + redirect + status check
+            const response = await fetch(src);
+            const status = response.status;
+            const redirected = response.redirected;
+            const contentType = response.headers.get('content-type');
+
+            if (!response.ok || status === 404) {
+                isInvalid = true;
+            }
+
+            // 3. Format mismatch check
+            const ext = src.split('.').pop().toLowerCase();
+
+            if (
+                (ext === 'jpg' && contentType?.includes('png')) ||
+                (ext === 'png' && contentType?.includes('jpeg'))
+            ) {
+                isInvalid = true;
+            }
+
+            // 4. Wrong host (site relocation issue)
+            const url = new URL(src, BASE_URL);
+            const expected = expectedHost;
+
+            if (url.hostname !== expected) {
+                isInvalid = true;
+            }
+
+            // 5. Timeout / unreachable handling is covered by fetch failure
+            if (redirected && status >= 300) {
+                isInvalid = true;
+            }
+
+            console.log(`${src} -> ${isInvalid ? 'INVALID' : 'OK'}`);
+
+            if (isInvalid) {
+                invalidImageCount++;
+            }
+
+        } catch (e) {
+            // Server timeout / unreachable / DNS failure
+            console.log(`${src} -> ERROR / TIMEOUT`);
+            invalidImageCount++;
+        }
+    }
+
+    console.log('Total invalid images:', invalidImageCount);
 
     return commonActions.validate(
-        'Broken Image',
-        details.isBroken,
-        true
+        'Invalid Image Count',
+        invalidImageCount,
+        0
     );
 }
-
-
-
 async function runAllTests() {
     const driver = await commonActions.createDriver();
     let results = [];
