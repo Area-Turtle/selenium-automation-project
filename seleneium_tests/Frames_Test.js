@@ -4,7 +4,7 @@ const BASE_URL = 'http://localhost:9292/';
 const pageTopic = 'Frames';
 
 
-async function runFDMainTest(driver) {
+async function runFMainTest(driver) {
     await driver.get(BASE_URL);
     // <a href="/add_remove_elements/">Add/Remove Elements</a>
     await driver.findElement(By.linkText(pageTopic)).click();
@@ -19,7 +19,7 @@ async function runFDMainTest(driver) {
         'The Internet'
     );
 }
-async function runFDFindPageHeading(driver) {
+async function runFFindPageHeading(driver) {
         await driver.get(BASE_URL);
         // <a href="/add_remove_elements/">Add/Remove Elements</a>
         await driver.findElement(By.linkText(pageTopic)).click();
