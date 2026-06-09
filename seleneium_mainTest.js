@@ -68,25 +68,25 @@ async function runFindItemCount(driver) {
     );
 }
 
-async function runBIainTest(driver) {
+async function runCDMainTest(driver) {
     await driver.get(BASE_URL);
     // <a href="/add_remove_elements/">Add/Remove Elements</a>
-    await driver.findElement(By.linkText('Broken Images')).click();
+    await driver.findElement(By.linkText('Challenging DOM')).click();
 
     const title = await driver.getTitle();
-    console.log("Broken Images Head Title:", title);
+    console.log("Challenging DOM Head Title:", title);
 
     // test validate: (name, actual, and expected)
     return commonActions.validate(
-        'Broken Images Head Title',
+        'Challenging DOM Head Title',
         title,
         'The Internet'
     );
 }
-async function runBIFindPageHeading(driver) {
+async function runCDFindPageHeading(driver) {
     await driver.get(BASE_URL);
     // <a href="/add_remove_elements/">Add/Remove Elements</a>
-    await driver.findElement(By.linkText('Broken Images')).click();
+    await driver.findElement(By.linkText('Challenging DOM')).click();
     const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
     const heading = await element.getText();
 
@@ -94,88 +94,127 @@ async function runBIFindPageHeading(driver) {
 
     // test validate: (name, actual, and expected)
     return commonActions.validate(
-        'Broken Image H3 Heading Test',
+        'Challenging DOM H3 Heading Test',
         heading,
-        'Broken Images'
+        'Challenging DOM'
     );
 }
-async function runBICombinedImageTest(driver) {
+async function runCDCheckButton(driver) {
     await driver.get(BASE_URL);
-    await driver.findElement(By.linkText('Broken Images')).click();
+    // <a href="/add_remove_elements/">Add/Remove Elements</a>
+    await driver.findElement(By.linkText('Challenging DOM')).click();
+    const buttons = await driver.findElements(By.css('a.button'));
 
-    const images = await driver.findElements(By.tagName('img'));
+    const allowedTexts = new Set(['foo', 'bar', 'qux', 'baz']);
 
-    let invalidImageCount = 0;
+    let valid = buttons.length > 0;
 
-    const expectedHost = new URL(BASE_URL).hostname;
+    for (const btn of buttons) {
+        const text = await btn.getText();
 
-    for (const img of images) {
-        const src = await img.getAttribute('src');
+        console.log('Button text:', text);
 
-        let isInvalid = false;
-
-        try {
-            // 1. DOM broken check (image failed to render)
-            const domBroken = await driver.executeScript(`
-                return arguments[0].complete &&
-                       arguments[0].naturalWidth === 0;
-            `, img);
-
-            if (domBroken) {
-                isInvalid = true;
-            }
-
-            // 2. HTTP validation + redirect + status check
-            const response = await fetch(src);
-            const status = response.status;
-            const redirected = response.redirected;
-            const contentType = response.headers.get('content-type');
-
-            if (!response.ok || status === 404) {
-                isInvalid = true;
-            }
-
-            // 3. Format mismatch check
-            const ext = src.split('.').pop().toLowerCase();
-
-            if (
-                (ext === 'jpg' && contentType?.includes('png')) ||
-                (ext === 'png' && contentType?.includes('jpeg'))
-            ) {
-                isInvalid = true;
-            }
-
-            // 4. Wrong host (site relocation issue)
-            const url = new URL(src, BASE_URL);
-            const expected = expectedHost;
-
-            if (url.hostname !== expected) {
-                isInvalid = true;
-            }
-
-            // 5. Timeout / unreachable handling is covered by fetch failure
-            if (redirected && status >= 300) {
-                isInvalid = true;
-            }
-
-            console.log(`${src} -> ${isInvalid ? 'INVALID' : 'OK'}`);
-
-            if (isInvalid) {
-                invalidImageCount++;
-            }
-
-        } catch (e) {
-            // Server timeout / unreachable / DNS failure
-            console.log(`${src} -> ERROR / TIMEOUT`);
-            invalidImageCount++;
+        if (!allowedTexts.has(text)) {
+            valid = false;
         }
     }
 
-    console.log('Total invalid images:', invalidImageCount);
+    return commonActions.validate(
+        'Button Text Valid (foo/bar/qux)',
+        valid,
+        true
+    );
+}
+async function runCDCheckButtonAlert(driver) {
+    await driver.get(BASE_URL);
+    // <a href="/add_remove_elements/">Add/Remove Elements</a>
+    await driver.findElement(By.linkText('Challenging DOM')).click();
+    const buttons = await driver.findElements(By.css('a.button.alert'));
+
+    const allowedTexts = new Set(['foo', 'bar', 'qux', 'baz']);
+
+    let valid = buttons.length > 0;
+
+    for (const btn of buttons) {
+        const text = await btn.getText();
+
+        console.log('Button text:', text);
+
+        if (!allowedTexts.has(text)) {
+            valid = false;
+        }
+    }
 
     return commonActions.validate(
-        'Invalid Image Count',
-        invalidImageCount > 1,
+        'Button Text Valid (foo/bar/qux/baz)',
+        valid,
+        true
+    );
+}
+
+async function runCDCheckButtonSuccess(driver) {
+    await driver.get(BASE_URL);
+    await driver.findElement(By.linkText('Challenging DOM')).click();
+
+    const buttons = await driver.findElements(By.css('a.button.success'));
+
+    const allowedTexts = new Set(['foo', 'bar', 'qux', 'baz']);
+
+    let valid = buttons.length > 0;
+
+    for (const btn of buttons) {
+
+        // DOM text
+        const domText = await btn.getText();
+
+        // ::before text
+        const beforeText = await driver.executeScript(`
+            return window.getComputedStyle(arguments[0], '::before')
+                         .getPropertyValue('content');
+        `, btn);
+
+        const cleanBefore = beforeText.replace(/['"]/g, '');
+
+        const fullVisibleText = cleanBefore + domText;
+
+        console.log('Visible text:', fullVisibleText);
+
+        // validate DOM text
+        if (!allowedTexts.has(domText)) {
+            valid = false;
+        }
+    }
+
+    return commonActions.validate(
+        'Success Button Text Valid',
+        valid,
+        true
+    );
+}
+
+async function runCDCheckCanvas(driver) {
+    await driver.get(BASE_URL);
+    await driver.findElement(By.linkText('Challenging DOM')).click();
+    const canvas = await driver.findElement(By.tagName('canvas'));
+
+    const hasContent = await driver.executeScript(`
+        const canvas = arguments[0];
+        const ctx = canvas.getContext('2d');
+
+        const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+
+        for (let i = 0; i < data.length; i++) {
+            if (data[i] !== 0) return true;
+        }
+
+        return false;
+    `, canvas);
+
+    console.log('Canvas has content:', hasContent);
+
+    return commonActions.validate(
+        'Canvas Displays Content',
+        hasContent,
         true
     );
 }
@@ -192,9 +231,12 @@ async function runAllTests() {
             runFindPageHeading,
             runFindSubHeading,
             runFindItemCount,
-            runBIainTest,
-            runBIFindPageHeading,
-            runBICombinedImageTest
+            runCDMainTest,
+            runCDFindPageHeading,
+            runCDCheckButton,
+            runCDCheckButtonAlert,
+            runCDCheckButtonSuccess,
+            runCDCheckCanvas
         ];
         for (const test of tests) {
             results.push(await test(driver));
