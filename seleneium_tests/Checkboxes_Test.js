@@ -26,7 +26,7 @@ async function runCBFindPageHeading(driver) {
 
     // test validate: (name, actual, and expected)
     return commonActions.validate(
-        'H3 Heading Test',
+        'Checkboxes H3 Heading Test',
         heading,
         'Checkboxes'
     );

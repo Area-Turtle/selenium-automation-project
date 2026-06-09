@@ -19,6 +19,9 @@ async function runBIainTest(driver) {
     );
 }
 async function runBIFindPageHeading(driver) {
+    await driver.get(BASE_URL);
+    // <a href="/add_remove_elements/">Add/Remove Elements</a>
+    await driver.findElement(By.linkText('Broken Images')).click();
     const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
     const heading = await element.getText();
 
@@ -26,8 +29,35 @@ async function runBIFindPageHeading(driver) {
 
     // test validate: (name, actual, and expected)
     return commonActions.validate(
-        'H3 Heading Test',
+        'Broken Image H3 Heading Test',
         heading,
         'Broken Images'
+    );
+}
+async function runBICheckImageValid(driver) {
+    await driver.get(BASE_URL);
+    await driver.findElement(By.linkText('Broken Images')).click();
+
+    const image = await driver.findElement(
+        By.css('img[src*="asdf.jpg"]')
+    );
+
+    const details = await driver.executeScript(`
+        return {
+            src: arguments[0].src,
+            complete: arguments[0].complete,
+            naturalWidth: arguments[0].naturalWidth,
+            naturalHeight: arguments[0].naturalHeight,
+            isBroken: arguments[0].complete &&
+                      arguments[0].naturalWidth === 0
+        };
+    `, image);
+
+    console.log('Image Details:', details);
+
+    return commonActions.validate(
+        'Broken Image',
+        details.isBroken,
+        true
     );
 }

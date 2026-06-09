@@ -26,7 +26,7 @@ async function runCMFindPageHeading(driver) {
 
     // test validate: (name, actual, and expected)
     return commonActions.validate(
-        'H3 Heading Test',
+        'Context Menu H3 Heading Test',
         heading,
         'Context Menu'
     );

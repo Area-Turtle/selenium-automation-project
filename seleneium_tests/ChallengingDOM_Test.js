@@ -26,7 +26,7 @@ async function runCDFindPageHeading(driver) {
 
     // test validate: (name, actual, and expected)
     return commonActions.validate(
-        'H3 Heading Test',
+        'Challenging DOM H3 Heading Test',
         heading,
         'Challenging DOM'
     );

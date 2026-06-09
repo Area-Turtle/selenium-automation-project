@@ -26,7 +26,7 @@ async function runDEFindPageHeading(driver) {
 
     // test validate: (name, actual, and expected)
     return commonActions.validate(
-        'H3 Heading Test',
+        'Disappearing Elements H3 Heading Test',
         heading,
         'Disappearing Elements'
     );

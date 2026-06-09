@@ -26,7 +26,7 @@ async function runDAFindPageHeading(driver) {
 
     // test validate: (name, actual, and expected)
     return commonActions.validate(
-        'H3 Heading Test',
+        'Digest Authentication H3 Heading Test',
         heading,
         'Digest Authentication'
     );

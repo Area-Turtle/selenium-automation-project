@@ -27,7 +27,7 @@ async function runDC2FindPageHeading(driver) {
 
     // test validate: (name, actual, and expected)
     return commonActions.validate(
-        'H3 Heading Test',
+        `${pageTopic} H3 Heading Test`,
         heading,
         pageTopic
     );
