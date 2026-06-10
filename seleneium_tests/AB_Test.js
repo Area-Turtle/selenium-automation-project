@@ -2,6 +2,16 @@ const { Builder, By } = require('selenium-webdriver');
 const commonActions = require('../support/commonActions');
 const BASE_URL = 'http://localhost:9292/';
 
+/**
+ * A/B Testing page title check.
+ *
+ * Navigates to the A/B Testing page and verifies
+ * the page title is correct.
+ *
+ * @async
+ * @returns {Promise<boolean>} Validation result
+ */
+
 async function runABMainTest(driver) {
     await driver.get(BASE_URL);
     await driver.findElement(By.linkText('A/B Testing')).click();
@@ -16,6 +26,16 @@ async function runABMainTest(driver) {
         'The Internet'
     );
 }
+
+/**
+ * A/B Testing page heading check.
+ *
+ * Navigates to the A/B Testing page and verifies
+ * the page heading is correct.
+ *
+ * @async
+ * @returns {Promise<boolean>} Validation result
+ */
 async function runABFindPageHeading(driver) {
     await driver.get(BASE_URL);
     await driver.findElement(By.linkText('A/B Testing')).click();
