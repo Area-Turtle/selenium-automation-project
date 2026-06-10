@@ -20,7 +20,7 @@ async function runDADMainTest(driver) {
     );
 }
 async function runDADFindPageHeading(driver) {
-        await driver.get(BASE_URL);
+    await driver.get(BASE_URL);
     // <a href="/add_remove_elements/">Add/Remove Elements</a>
     await driver.findElement(By.linkText(pageTopic)).click();
     const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
@@ -33,5 +33,25 @@ async function runDADFindPageHeading(driver) {
         `${pageTopic} H3 Heading Test`,
         heading,
         pageTopic
+    );
+}
+async function runDragAndDropTest(driver) {
+    await driver.get(BASE_URL);
+    // <a href="/add_remove_elements/">Add/Remove Elements</a>
+    await driver.findElement(By.linkText(pageTopic)).click();
+
+    const coloumA = await driver.findElement(By.id('column-a'));
+    const coloumB = await driver.findElement(By.id('column-b'));
+
+    await driver.actions()
+        .dragAndDrop(coloumA, coloumB)
+        .perform();
+
+    const coloumAHeader = await coloumA.findElement(By.tagName('header')).getText();
+
+    return commonActions.validate(
+        'Drag and Drop Test',
+        coloumAHeader,
+        'B'
     );
 }

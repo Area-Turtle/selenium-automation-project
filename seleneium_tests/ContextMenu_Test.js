@@ -35,7 +35,7 @@ async function runCMFindPageHeading(driver) {
     );
 }
 
-async function runContextMenuTest(driver) {
+async function runCMContextTest(driver) {
     await driver.get(BASE_URL);
     // <a href="/add_remove_elements/">Add/Remove Elements</a>
     await driver.findElement(By.linkText('Context Menu')).click();

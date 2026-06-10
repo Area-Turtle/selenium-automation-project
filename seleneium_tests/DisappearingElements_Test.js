@@ -19,7 +19,7 @@ async function runDEMainTest(driver) {
     );
 }
 async function runDEFindPageHeading(driver) {
-        await driver.get(BASE_URL);
+    await driver.get(BASE_URL);
     // <a href="/add_remove_elements/">Add/Remove Elements</a>
     await driver.findElement(By.linkText('Disappearing Elements')).click();
     const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
@@ -32,5 +32,47 @@ async function runDEFindPageHeading(driver) {
         'Disappearing Elements H3 Heading Test',
         heading,
         'Disappearing Elements'
+    );
+}
+
+async function runDETabCheck(driver) {
+    await driver.get(BASE_URL);
+    // <a href="/add_remove_elements/">Add/Remove Elements</a>
+    await driver.findElement(By.linkText('Disappearing Elements')).click();
+
+    const galleryLinks = await driver.findElements(
+        By.linkText('Gallery')
+    );
+
+    const galleryExists = galleryLinks.length > 0;
+
+    console.log('Gallery exists:', galleryExists);
+    const links = [
+        'Home',
+        'About',
+        'Contact Us',
+        'Portfolio'
+    ];
+
+    if (galleryExists) {
+        links.push('Gallery');
+    }
+    
+    let expectedLinks = true;
+
+    for (const link of links) {
+        const elements = await driver.findElements(By.linkText(link));
+
+        if (elements.length === 0) {
+            // throw new Error(`${link} link not found`);
+            console.log(`Missing link: ${link}`);
+            expectedLinks = false;
+        }
+    }
+
+    return commonActions.validate(
+        'Disappearing Elements Tab Test',
+        expectedLinks,
+        true
     );
 }

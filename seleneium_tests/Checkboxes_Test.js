@@ -84,7 +84,7 @@ async function runCBCheckboxCheck(driver) {
     // test validate: (name, actual, and expected)
     return commonActions.validate(
         'Checkbox State Test',
-        checkbox0 === true && checkbox1 === false,
+        checkbox0[0] === true && checkbox[1] === false,
         true
     );
 }
