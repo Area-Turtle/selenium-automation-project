@@ -34,3 +34,26 @@ async function runCMFindPageHeading(driver) {
         'Context Menu'
     );
 }
+
+async function runContextMenuTest(driver) {
+    await driver.get(BASE_URL);
+    // <a href="/add_remove_elements/">Add/Remove Elements</a>
+    await driver.findElement(By.linkText('Context Menu')).click();
+
+    const box = await driver.findElement(By.id('hot-spot'));
+
+    await driver.actions()
+        .contextClick(box)
+        .perform();
+
+    const alert = await driver.switchTo().alert();
+    const alertText = await alert.getText();
+
+    await alert.accept();
+
+    return commonActions.validate(
+        'Context Menu Alert Test',
+        alertText,
+        'You selected a context menu'
+    );
+}
