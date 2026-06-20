@@ -1,7 +1,7 @@
 const { Builder, By } = require('selenium-webdriver');
 const commonActions = require('../support/commonActions');
 const BASE_URL = 'http://localhost:9292/';
-const pageTopic = 'File Upload';
+const pageTopic = 'File Uploader';
 
 
 async function runFUMainTest(driver) {
@@ -20,9 +20,9 @@ async function runFUMainTest(driver) {
     );
 }
 async function runFUFindPageHeading(driver) {
-        await driver.get(BASE_URL);
-        // <a href="/add_remove_elements/">Add/Remove Elements</a>
-        await driver.findElement(By.linkText(pageTopic)).click();
+    await driver.get(BASE_URL);
+    // <a href="/add_remove_elements/">Add/Remove Elements</a>
+    await driver.findElement(By.linkText(pageTopic)).click();
     const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
     const heading = await element.getText();
 
@@ -33,5 +33,44 @@ async function runFUFindPageHeading(driver) {
         `${pageTopic} H3 Heading Test`,
         heading,
         pageTopic
+    );
+}
+
+async function runFUUploadButtons(driver) {
+    await driver.get(BASE_URL);
+    // <a href="/add_remove_elements/">Add/Remove Elements</a>
+    await driver.findElement(By.linkText(pageTopic)).click();
+    const uploadInput = await driver.findElement(
+        By.id('file-upload')
+    );
+
+    const uploadButton = await driver.findElement(
+        By.id('file-submit')
+    );
+
+    return commonActions.validate(
+        '(File Uploader) Controls Exist',
+        !!uploadInput && !!uploadButton,
+        true
+    );
+}
+
+async function runFUUploadTest(driver) {
+    await driver.get(BASE_URL);
+    // <a href="/add_remove_elements/">Add/Remove Elements</a>
+    await driver.findElement(By.linkText(pageTopic)).click();
+    await driver.findElement(
+        By.id('file-upload')
+    ).sendKeys(filePath);
+
+    const selectedFile = await driver.findElement(
+        By.id('file-upload')
+    ).getAttribute('value');
+
+    console.log(selectedFile);
+    return commonActions.validate(
+        '(File Uploader) File Selected',
+        selectedFile.includes('sample.txt'),
+        true
     );
 }
