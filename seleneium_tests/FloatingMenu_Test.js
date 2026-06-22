@@ -35,3 +35,54 @@ async function runFMFindPageHeading(driver) {
         pageTopic
     );
 }
+
+async function runFMVerifyMenuButtonsExist(driver) {
+    await driver.get(BASE_URL);
+    // <a href="/add_remove_elements/">Add/Remove Elements</a>
+    await driver.findElement(By.linkText(pageTopic)).click();
+
+    const buttons = await driver.findElements(
+    By.css('#menu a')
+);
+
+console.log(`Found ${buttons.length} buttons`);
+for (const button of buttons) {
+    console.log(await button.getText());
+}
+    // test validate: (name, actual, and expected)
+const buttons = await driver.findElements(
+    By.css('#menu a')
+);
+
+const texts = [];
+
+for (const button of buttons) {
+    texts.push(await button.getText());
+}
+
+return commonActions.validate(
+    '(Floating Menu) Button Count',
+    texts.length,
+    4
+);
+}
+
+async function runFMMenuButtonsExistOnScroll(driver) {
+    await driver.get(BASE_URL);
+    // <a href="/add_remove_elements/">Add/Remove Elements</a>
+    await driver.findElement(By.linkText(pageTopic)).click();
+
+    const menu = await driver.findElement(
+        By.id('menu')
+    );
+
+    await driver.executeScript(
+        'window.scrollTo(0, document.body.scrollHeight);'
+    );
+
+    return commonActions.validate(
+        '(Floating Menu) Menu Visible After Scroll',
+        await menu.isDisplayed(),
+        true
+    );
+}
