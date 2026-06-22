@@ -20,9 +20,9 @@ async function runFMMainTest(driver) {
     );
 }
 async function runFMFindPageHeading(driver) {
-        await driver.get(BASE_URL);
-        // <a href="/add_remove_elements/">Add/Remove Elements</a>
-        await driver.findElement(By.linkText(pageTopic)).click();
+    await driver.get(BASE_URL);
+    // <a href="/add_remove_elements/">Add/Remove Elements</a>
+    await driver.findElement(By.linkText(pageTopic)).click();
     const element = await commonActions.waitForVisible(driver, By.css('.example h3'));
     const heading = await element.getText();
 
@@ -42,29 +42,29 @@ async function runFMVerifyMenuButtonsExist(driver) {
     await driver.findElement(By.linkText(pageTopic)).click();
 
     const buttons = await driver.findElements(
-    By.css('#menu a')
-);
+        By.css('#menu a')
+    );
 
-console.log(`Found ${buttons.length} buttons`);
-for (const button of buttons) {
-    console.log(await button.getText());
-}
+    console.log(`Found ${buttons.length} buttons`);
+    for (const button of buttons) {
+        console.log(await button.getText());
+    }
     // test validate: (name, actual, and expected)
-const buttons = await driver.findElements(
-    By.css('#menu a')
-);
+    const buttons = await driver.findElements(
+        By.css('#menu a')
+    );
 
-const texts = [];
+    const texts = [];
 
-for (const button of buttons) {
-    texts.push(await button.getText());
-}
+    for (const button of buttons) {
+        texts.push(await button.getText());
+    }
 
-return commonActions.validate(
-    '(Floating Menu) Button Count',
-    texts.length,
-    4
-);
+    return commonActions.validate(
+        '(Floating Menu) Button Count',
+        texts.length,
+        4
+    );
 }
 
 async function runFMMenuButtonsExistOnScroll(driver) {
